@@ -1,0 +1,23 @@
+name: CI Testing Pipeline
+
+on:
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  run_linter:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.1
+
+      - name: Setup Node.js and pnpm
+        uses: ./.github/actions/setup-node-pnpm
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Run linting
+        run: pnpm lint
+
+      - name: Run stylelint
+        run: pnpm stylelint
