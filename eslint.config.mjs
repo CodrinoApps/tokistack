@@ -2,8 +2,8 @@
 
 import eslint from "@eslint/js";
 import eslintPluginJest from "eslint-plugin-jest";
+import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
-import { defineConfig } from 'eslint/config';
 
 export default defineConfig(
   eslint.configs.recommended,
