@@ -1,0 +1,33 @@
+{
+  "name": "@tokistack/db",
+  "version": "1.0.0",
+  "description": "Database package for Tokistack",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    },
+    "./schema": {
+      "types": "./src/schema/index.ts",
+      "default": "./dist/schema/index.js"
+    },
+    "./schemas/*": {
+      "types": "./src/schema/*.ts",
+      "default": "./dist/schema/*.js"
+    }
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "1.0.2",
+    "drizzle-orm": "1.0.0-beta.15-859cf75",
+    "postgres": "3.4.8"
+  },
+  "devDependencies": {
+    "@tokistack/typescript-config": "workspace:*",
+    "typescript": "5.9.3"
+  }
+}
