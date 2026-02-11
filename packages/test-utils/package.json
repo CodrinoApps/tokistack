@@ -1,0 +1,29 @@
+{
+  "name": "@tokistack/test-utils",
+  "version": "1.0.0",
+  "description": "Shared test utilities for Tokistack",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./globalSetup": {
+      "types": "./src/globalSetup.ts",
+      "default": "./src/globalSetup.ts"
+    },
+    "./setup": {
+      "types": "./src/setup.ts",
+      "default": "./src/setup.ts"
+    }
+  },
+  "dependencies": {
+    "@tokistack/db": "workspace:*",
+    "drizzle-orm": "1.0.0-beta.15-859cf75"
+  },
+  "devDependencies": {
+    "@tokistack/typescript-config": "workspace:*",
+    "@types/node": "25.2.2",
+    "typescript": "5.9.3"
+  }
+}

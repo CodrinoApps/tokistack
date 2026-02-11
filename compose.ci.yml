@@ -1,0 +1,9 @@
+services:
+  postgres_testing:
+    image: postgres:17-alpine3.22
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: tokistack_integration_tests
+    ports:
+      - "5433:5432"

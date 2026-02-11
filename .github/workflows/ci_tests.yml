@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-24.04-arm
     steps:
       - name: Checkout
-        uses: actions/checkout@v6.0.1
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup Node.js and pnpm
         uses: ./.github/actions/setup-node-pnpm
@@ -21,3 +21,41 @@ jobs:
 
       - name: Run stylelint
         run: pnpm stylelint
+
+  run_integration_tests:
+    runs-on: ubuntu-24.04-arm
+    strategy:
+      matrix:
+        include:
+          - module: "@tokistack/db-migrator"
+            test_command: pnpm --filter @tokistack/db-migrator test
+            with_db: true
+            requires_migration: false
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js and pnpm
+        uses: ./.github/actions/setup-node-pnpm
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Start postgres container
+        if: ${{ matrix.with_db }}
+        run: |
+          docker compose -f compose.ci.yml up -d postgres_testing
+          echo "--- postgres container is running ---"
+
+      - name: Build packages
+        run: pnpm turbo build
+
+      - name: Apply migrations
+        if: ${{ matrix.requires_migration }}
+        run: pnpm --filter @tokistack/db-migrator db:migrate
+        env:
+          DATABASE_URL: postgres://postgres:postgres@localhost:5433/tokistack_integration_tests
+          DEV_OR_INTEGRATION_USE: "true"
+
+      - name: Run tests for ${{ matrix.module }}
+        run: ${{ matrix.test_command }}
