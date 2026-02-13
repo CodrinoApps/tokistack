@@ -1,0 +1,32 @@
+{
+  "name": "@tokistack/db-migrator",
+  "version": "1.0.0",
+  "description": "Database Migrator for Tokistack",
+  "private": true,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json && cp -r src/migrations dist/migrations",
+    "dev": "tsc --watch",
+    "db:migration:dev:generate": "sh -c 'drizzle-kit generate --name ${0}'",
+    "db:migrate": "node ./dist/index.js",
+    "test": "dotenv -e .env.test jest -- --runInBand"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@tokistack/db": "workspace:*",
+    "@tokistack/logger": "workspace:*",
+    "drizzle-orm": "1.0.0-beta.15-859cf75",
+    "postgres": "3.4.8"
+  },
+  "devDependencies": {
+    "@types/node": "25.2.2",
+    "@tokistack/test-utils": "workspace:*",
+    "@types/jest": "30.0.0",
+    "dotenv": "17.2.3",
+    "dotenv-cli": "11.0.0",
+    "@tokistack/typescript-config": "workspace:*",
+    "drizzle-kit": "1.0.0-beta.15-859cf75",
+    "typescript": "5.9.3",
+    "jest": "30.2.0",
+    "ts-jest": "29.4.6"
+  }
+}

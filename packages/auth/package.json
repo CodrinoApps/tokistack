@@ -1,0 +1,26 @@
+{
+  "name": "@tokistack/auth",
+  "version": "1.0.0",
+  "description": "Auth package for Tokistack",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "better-auth:generate-migration": "pnpx https://pkg.pr.new/better-auth/better-auth/@better-auth/cli@6913 generate --config ./src/auth.ts --output ../db/src/schema/autogen.ts --yes"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "dependencies": {
+    "@better-auth/drizzle-adapter": "https://pkg.pr.new/better-auth/better-auth/@better-auth/drizzle-adapter@6913",
+    "@tokistack/db": "workspace:*",
+    "better-auth": "1.5.0-beta.13"
+  },
+  "devDependencies": {
+    "@tokistack/typescript-config": "workspace:*",
+    "typescript": "5.9.3"
+  }
+}
