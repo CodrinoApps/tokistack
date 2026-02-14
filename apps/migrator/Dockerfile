@@ -1,5 +1,5 @@
 # build stage
-FROM node:24.13-alpine3.22 AS builder
+FROM node:24-alpine AS builder
 WORKDIR /app
 
 COPY package.json .
@@ -30,7 +30,7 @@ RUN pnpm \
 #########################
 ###### PROD STAGE #######
 #########################
-FROM node:24.13-alpine3.22
+FROM node:24-alpine
 WORKDIR /app
 
 COPY --from=builder /app/pruned/dist ./dist/

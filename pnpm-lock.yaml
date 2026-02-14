@@ -253,21 +253,21 @@ packages:
     }
     engines: { node: ">=20.0.0" }
 
-  "@azure/msal-browser@4.28.1":
+  "@azure/msal-browser@4.28.2":
     resolution: {
-      integrity: sha512-al2u2fTchbClq3L4C1NlqLm+vwKfhYCPtZN2LR/9xJVaQ4Mnrwf5vANvuyPSJHcGvw50UBmhuVmYUAhTEetTpA==,
+      integrity: sha512-6vYUMvs6kJxJgxaCmHn/F8VxjLHNh7i9wzfwPGf8kyBJ8Gg2yvBXx175Uev8LdrD1F5C4o7qHa2CC4IrhGE1XQ==,
     }
     engines: { node: ">=0.8.0" }
 
-  "@azure/msal-common@15.14.1":
+  "@azure/msal-common@15.14.2":
     resolution: {
-      integrity: sha512-IkzF7Pywt6QKTS0kwdCv/XV8x8JXknZDvSjj/IccooxnP373T5jaadO3FnOrbWo3S0UqkfIDyZNTaQ/oAgRdXw==,
+      integrity: sha512-n8RBJEUmd5QotoqbZfd+eGBkzuFI1KX6jw2b3WcpSyGjwmzoeI/Jb99opIBPHpb8y312NB+B6+FGi2ZVSR8yfA==,
     }
     engines: { node: ">=0.8.0" }
 
-  "@azure/msal-node@3.8.6":
+  "@azure/msal-node@3.8.7":
     resolution: {
-      integrity: sha512-XTmhdItcBckcVVTy65Xp+42xG4LX5GK+9AqAsXPXk4IqUNv+LyQo5TMwNjuFYBfAB2GTG9iSQGk+QLc03vhf3w==,
+      integrity: sha512-a+Xnrae+uwLnlw68bplS1X4kuJ9F/7K6afuMFyRkNIskhjgDezl5Fhrx+1pmAlDmC0VaaAxjRQMp1OmcqVwkIg==,
     }
     engines: { node: ">=16" }
 
@@ -1500,9 +1500,9 @@ packages:
     }
     engines: { node: ">=12" }
 
-  "@mongodb-js/saslprep@1.4.5":
+  "@mongodb-js/saslprep@1.4.6":
     resolution: {
-      integrity: sha512-k64Lbyb7ycCSXHSLzxVdb2xsKGPMvYZfCICXvDsI8Z65CeWQzTEKS4YmGbnqw+U9RBvLPTsB6UCmwkgsDTGWIw==,
+      integrity: sha512-y+x3H1xBZd38n10NZF/rEBlvDOOMQ6LKUTHqr8R9VkJ+mmQOYtJFxIlkkK8fZrtOiL6VixbOBWMbZGBdal3Z1g==,
     }
 
   "@mrleebo/prisma-ast@0.13.1":
@@ -2420,9 +2420,9 @@ packages:
       integrity: sha512-tskPPKEs8D2KPafUypv2gxwJP8h/OaJmC82QQGGDQcHvXX43xF2VDACcJVmZ0EuSxkpO9Kc4MlrA3q0+FG58AQ==,
     }
 
-  citty@0.2.0:
+  citty@0.2.1:
     resolution: {
-      integrity: sha512-8csy5IBFI2ex2hTVpaHN2j+LNE199AgiI7y4dMintrr8i0lQiFn+0AWMZrWdHKIgMOer65f8IThysYhoReqjWA==,
+      integrity: sha512-kEV95lFBhQgtogAPlQfJJ0WGVSokvLr/UEoFPiKKOXF7pl98HfUVUD0ejsuTCld/9xH9vogSywZ5KqHzXrZpqg==,
     }
 
   cjs-module-lexer@2.2.0:
@@ -3261,9 +3261,9 @@ packages:
       integrity: sha512-6ufJOsSA7LcQehIJNCO7HIBykfM7DXQual0Ny780/DEcJIpBlHRvcqEBWGPYd7hrXL2GJ3oJI1MIhaXjWmLQOQ==,
     }
 
-  graphmatch@1.1.0:
+  graphmatch@1.1.1:
     resolution: {
-      integrity: sha512-0E62MaTW5rPZVRLyIJZG/YejmdA/Xr1QydHEw3Vt+qOKkMIOE8WDLc9ZX2bmAjtJFZcId4lEdrdmASsEy7D1QA==,
+      integrity: sha512-5ykVn/EXM1hF0XCaWh05VbYvEiOL2lY1kBxZtaYsyvjp7cmWOU1XsAdfQBwClraEofXDT197lFbXOEVMHpvQOg==,
     }
 
   handlebars@4.7.8:
@@ -5288,8 +5288,8 @@ snapshots:
       "@azure/core-tracing": 1.3.1
       "@azure/core-util": 1.13.1
       "@azure/logger": 1.3.0
-      "@azure/msal-browser": 4.28.1
-      "@azure/msal-node": 3.8.6
+      "@azure/msal-browser": 4.28.2
+      "@azure/msal-node": 3.8.7
       open: 10.2.0
       tslib: 2.8.1
     transitivePeerDependencies:
@@ -5333,15 +5333,15 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  "@azure/msal-browser@4.28.1":
+  "@azure/msal-browser@4.28.2":
     dependencies:
-      "@azure/msal-common": 15.14.1
+      "@azure/msal-common": 15.14.2
 
-  "@azure/msal-common@15.14.1": {}
+  "@azure/msal-common@15.14.2": {}
 
-  "@azure/msal-node@3.8.6":
+  "@azure/msal-node@3.8.7":
     dependencies:
-      "@azure/msal-common": 15.14.1
+      "@azure/msal-common": 15.14.2
       jsonwebtoken: 9.0.3
       uuid: 8.3.2
 
@@ -6220,7 +6220,7 @@ snapshots:
     dependencies:
       jsbi: 4.3.2
 
-  "@mongodb-js/saslprep@1.4.5":
+  "@mongodb-js/saslprep@1.4.6":
     dependencies:
       sparse-bitfield: 3.0.3
 
@@ -6388,7 +6388,7 @@ snapshots:
 
   "@types/mssql@9.1.9(@azure/core-client@1.10.1)":
     dependencies:
-      "@types/node": 25.2.2
+      "@types/node": 25.2.3
       tarn: 3.0.2
       tedious: 19.2.1(@azure/core-client@1.10.1)
     transitivePeerDependencies:
@@ -6419,7 +6419,7 @@ snapshots:
 
   "@types/readable-stream@4.0.23":
     dependencies:
-      "@types/node": 25.2.2
+      "@types/node": 25.2.3
 
   "@types/stack-utils@2.0.3": {}
 
@@ -6905,7 +6905,7 @@ snapshots:
     dependencies:
       consola: 3.4.2
 
-  citty@0.2.0: {}
+  citty@0.2.1: {}
 
   cjs-module-lexer@2.2.0: {}
 
@@ -7431,7 +7431,7 @@ snapshots:
 
   grammex@3.1.12: {}
 
-  graphmatch@1.1.0: {}
+  graphmatch@1.1.1: {}
 
   handlebars@4.7.8:
     dependencies:
@@ -8161,7 +8161,7 @@ snapshots:
 
   mongodb@7.1.0:
     dependencies:
-      "@mongodb-js/saslprep": 1.4.5
+      "@mongodb-js/saslprep": 1.4.6
       bson: 7.2.0
       mongodb-connection-string-url: 7.0.1
 
@@ -8221,7 +8221,7 @@ snapshots:
 
   nypm@0.6.5:
     dependencies:
-      citty: 0.2.0
+      citty: 0.2.1
       pathe: 2.0.3
       tinyexec: 1.0.2
 
@@ -8632,7 +8632,7 @@ snapshots:
       "@azure/identity": 4.13.0
       "@azure/keyvault-keys": 4.10.0(@azure/core-client@1.10.1)
       "@js-joda/core": 5.7.0
-      "@types/node": 25.2.2
+      "@types/node": 25.2.3
       bl: 6.1.6
       iconv-lite: 0.6.3
       js-md4: 0.3.2
@@ -8648,7 +8648,7 @@ snapshots:
       "@azure/identity": 4.13.0
       "@azure/keyvault-keys": 4.10.0(@azure/core-client@1.10.1)
       "@js-joda/core": 5.7.0
-      "@types/node": 25.2.2
+      "@types/node": 25.2.3
       bl: 6.1.6
       iconv-lite: 0.7.2
       js-md4: 0.3.2
@@ -8888,6 +8888,6 @@ snapshots:
   zeptomatch@2.1.0:
     dependencies:
       grammex: 3.1.12
-      graphmatch: 1.1.0
+      graphmatch: 1.1.1
 
   zod@4.3.6: {}
