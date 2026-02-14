@@ -45,7 +45,7 @@ jobs:
         if: ${{ matrix.with_db }}
         run: |
           docker compose -f compose.ci.yml up -d postgres_testing
-          echo "--- postgres container is running ---"
+          until docker compose -f compose.ci.yml exec -T postgres_testing pg_isready; do sleep 1; done
 
       - name: Build packages
         run: pnpm turbo build

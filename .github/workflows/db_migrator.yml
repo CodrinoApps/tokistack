@@ -1,0 +1,78 @@
+name: Database Migrator
+
+on:
+  workflow_call:
+    secrets:
+      DB_BRANCH:
+        required: true
+      DOCKER_HUB_USERNAME:
+        required: true
+      DOCKER_HUB_ACCESS_TOKEN:
+        required: true
+    inputs:
+      hash_or_version:
+        description: "The hash or version to use for the image tag"
+        required: true
+        type: string
+
+jobs:
+  changes:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'apps/migrator/**'
+              - 'packages/db/**'
+              - '.github/workflows/db_migrator.yml'
+
+  build_image:
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Log in to Docker Hub
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@8d2750c68a42422c14e847fe6c8ac0403b4cbd6f # v3.12.0
+      - name: Build, tag, and push docker image to Docker Hub
+        uses: docker/build-push-action@10e90e3645eae34f1e60eeb005ba3a3d33f178e8 # v6.19.2
+        with:
+          context: .
+          file: apps/migrator/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/tokistack-migration-runner:${{ inputs.hash_or_version }}
+          cache-from: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/tokistack-migration-runner:buildcache
+          cache-to: type=registry,ref=${{ secrets.DOCKER_HUB_USERNAME }}/tokistack-migration-runner:buildcache,mode=max
+
+  run_migrator:
+    needs:
+      - build_image
+      - changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Log in to Docker Hub
+        uses: docker/login-action@c94ce9fb468520275223c153574b00df6fe4bcc9 # v3.7.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Run migration
+        env:
+          DATABASE_URL: ${{ secrets.DB_BRANCH }}
+          IMAGE: ${{ secrets.DOCKER_HUB_USERNAME }}/tokistack-migration-runner:${{ inputs.hash_or_version }}
+        run: docker run --rm -e DATABASE_URL $IMAGE

@@ -2,14 +2,34 @@ name: CI Pipeline
 
 on:
   pull_request:
-  push:
-    branches:
-      - main
 
 permissions:
   id-token: write
   contents: read
+  pull-requests: read
 
 jobs:
   run_tests:
     uses: ./.github/workflows/ci_tests.yml
+
+  reset_neon_testing_branch:
+    needs: run_tests
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Reset Neon Testing branch to parent
+        uses: neondatabase/reset-branch-action@cb1c835c40a9363509406d98eb15f42cddbdaef6 # v1.3.1
+        with:
+          project_id: ${{ vars.NEON_PROJECT_ID }}
+          parent: true
+          branch: testing
+          api_key: ${{ secrets.NEON_API_KEY }}
+
+  build_and_migrate:
+    uses: ./.github/workflows/db_migrator.yml
+    needs: reset_neon_testing_branch
+    secrets:
+      DB_BRANCH: ${{ secrets.NEON_DB_TESTING }}
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+    with:
+      hash_or_version: ${{ github.sha }}
