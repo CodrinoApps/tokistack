@@ -1,4 +1,4 @@
-import { localDb } from "./clients/pg";
+import { closeConnection, localDb } from "./clients/pg";
 import { serverlessDb } from "./clients/serverless-pg";
 import { USE_LOCAL_CLIENT } from "./config";
 
@@ -14,3 +14,4 @@ function getDbClient() {
 }
 
 export const db = getDbClient();
+export { closeConnection };

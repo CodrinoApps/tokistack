@@ -1,4 +1,4 @@
-import { db } from "@tokistack/db";
+import { closeConnection, db } from "@tokistack/db";
 import { sql } from "drizzle-orm";
 
 /**
@@ -16,3 +16,7 @@ export default async function truncateAllTables() {
     );
   }
 }
+
+afterAll(async () => {
+  await closeConnection();
+});

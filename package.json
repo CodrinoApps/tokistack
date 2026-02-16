@@ -6,6 +6,7 @@
   "private": true,
   "scripts": {
     "turbo:build": "turbo run build",
+    "turbo:build:api": "turbo run build --filter=@tokistack/api",
     "lint": "eslint . --ext .ts,.tsx",
     "lint:fix": "eslint . --ext .ts,.tsx --fix",
     "stylelint": "dprint check",
