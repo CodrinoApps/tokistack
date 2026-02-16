@@ -199,6 +199,9 @@ importers:
       "@tokistack/typescript-config":
         specifier: workspace:*
         version: link:../tsconfig
+      "@types/jest":
+        specifier: 30.0.0
+        version: 30.0.0
       "@types/node":
         specifier: 25.2.2
         version: 25.2.2

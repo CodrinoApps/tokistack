@@ -24,17 +24,30 @@ jobs:
 
   run_integration_tests:
     runs-on: ubuntu-24.04-arm
+    services:
+      postgres:
+        image: postgres:17-alpine3.22
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER: postgres
+          POSTGRES_DB: tokistack_integration_tests
+        ports:
+          - "5433:5432"
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 2s
+          --health-timeout 5s
+          --health-retries 10
+
     strategy:
       matrix:
         include:
           - module: "@tokistack/db-migrator"
             test_command: pnpm --filter @tokistack/db-migrator test
-            with_db: true
             requires_migration: false
 
           - module: "@tokistack/api"
             test_command: pnpm --filter @tokistack/api test
-            with_db: true
             requires_migration: true
 
     steps:
@@ -45,12 +58,6 @@ jobs:
         uses: ./.github/actions/setup-node-pnpm
         with:
           node-version: ${{ vars.NODE_VERSION }}
-
-      - name: Start postgres container
-        if: ${{ matrix.with_db }}
-        run: |
-          docker compose -f compose.ci.yml up -d postgres_testing
-          until docker compose -f compose.ci.yml exec -T postgres_testing pg_isready; do sleep 1; done
 
       - name: Build packages
         run: pnpm turbo build
@@ -64,3 +71,15 @@ jobs:
 
       - name: Run tests for ${{ matrix.module }}
         run: ${{ matrix.test_command }}
+
+  ci-success:
+    runs-on: ubuntu-24.04-arm
+    if: always()
+    needs: [run_linter, run_integration_tests]
+    steps:
+      - name: Check all jobs passed
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') || contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "One or more jobs failed or were cancelled"
+            exit 1
+          fi
