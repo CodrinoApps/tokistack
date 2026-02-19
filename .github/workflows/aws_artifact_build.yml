@@ -1,0 +1,56 @@
+name: AWS_Artifact_Build
+
+on:
+  workflow_call:
+    secrets:
+      AWS_ROLE_TO_ASSUME:
+        required: true
+      AWS_REGION:
+        required: true
+    inputs:
+      hash_or_version:
+        description: "Commit SHA or semver tag used as the S3 key prefix"
+        required: true
+        type: string
+
+jobs:
+  build_and_upload:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: ./.github/actions/setup-node-pnpm
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7 # v6.0.0
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+          aws-region: ${{ secrets.AWS_REGION }}
+          mask-aws-account-id: true
+
+      - name: Get cluster name from SSM
+        id: cluster
+        run: |
+          CLUSTER=$(aws ssm get-parameter \
+            --name "/tokistack/cluster" \
+            --query "Parameter.Value" \
+            --output text)
+          echo "name=${CLUSTER}" >> "${GITHUB_OUTPUT}"
+
+      - name: Build API Lambda bundle
+        run: pnpm turbo build --filter=@tokistack/api
+
+      - name: Package Lambda zip
+        run: |
+          cd apps/api/dist
+          zip -j api.zip index.js index.js.map
+
+      - name: Upload artifact to S3
+        run: |
+          aws s3 cp apps/api/dist/api.zip \
+            s3://tokistack-${{ steps.cluster.outputs.name }}-artifacts/${{ inputs.hash_or_version }}/api.zip

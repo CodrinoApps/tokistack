@@ -1,0 +1,67 @@
+name: AWS_Pipeline_API
+
+on:
+  workflow_call:
+    secrets:
+      AWS_ROLE_TO_ASSUME:
+        required: true
+      AWS_REGION:
+        required: true
+    inputs:
+      hash_or_version:
+        description: "The hash or version to use for the artifact"
+        required: true
+        type: string
+
+jobs:
+  changes:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      src: ${{ steps.filter.outputs.src }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        id: filter
+        with:
+          filters: |
+            src:
+              - 'apps/api/**'
+              - 'infrastructure/aws/**'
+
+  deploy_artifacts_stack:
+    needs: changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
+    secrets:
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+    uses: ./.github/workflows/aws_deploy.yml
+    with:
+      desired_stack: TokistackArtifacts
+
+  build_artifact:
+    needs:
+      - deploy_artifacts_stack
+      - changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
+    secrets:
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+    uses: ./.github/workflows/aws_artifact_build.yml
+    with:
+      hash_or_version: ${{ inputs.hash_or_version }}
+
+  deploy_api_stack:
+    needs:
+      - build_artifact
+      - changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
+    secrets:
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+    uses: ./.github/workflows/aws_deploy.yml
+    with:
+      desired_stack: TokistackApi
+      cfn_parameters: "--parameters hashOrVersion=${{ inputs.hash_or_version }}"
