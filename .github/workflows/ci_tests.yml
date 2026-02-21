@@ -72,10 +72,24 @@ jobs:
       - name: Run tests for ${{ matrix.module }}
         run: ${{ matrix.test_command }}
 
+  run_cdk_tests:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js and pnpm
+        uses: ./.github/actions/setup-node-pnpm
+        with:
+          node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Run CDK tests
+        run: pnpm --filter @tokistack/aws test
+
   ci-success:
     runs-on: ubuntu-24.04-arm
     if: always()
-    needs: [run_linter, run_integration_tests]
+    needs: [run_linter, run_integration_tests, run_cdk_tests]
     steps:
       - name: Check all jobs passed
         run: |

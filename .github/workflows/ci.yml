@@ -33,3 +33,12 @@ jobs:
       DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     with:
       hash_or_version: ${{ github.sha }}
+
+  deploy_api:
+    uses: ./.github/workflows/aws_pipeline_api.yml
+    needs: build_and_migrate
+    secrets:
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_DEV_TESTING_ROLE }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+    with:
+      hash_or_version: ${{ github.sha }}
