@@ -1,0 +1,64 @@
+name: Cloudflare_Pipeline
+
+on:
+  workflow_call:
+    secrets:
+      TF_API_TOKEN:
+        required: true
+    inputs:
+      terraform_action:
+        description: "Terraform action to run (plan or apply)"
+        required: true
+        type: string
+      cluster:
+        description: "Target environment cluster (testing or production)"
+        required: true
+        type: string
+
+jobs:
+  changes:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      shared: ${{ steps.filter.outputs.shared }}
+      environments: ${{ steps.filter.outputs.environments }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        id: filter
+        with:
+          filters: |
+            shared:
+              - 'infrastructure/cloudflare/shared/**'
+            environments:
+              - 'infrastructure/cloudflare/environments/**'
+
+  deploy_shared:
+    needs: changes
+    if: ${{ needs.changes.outputs.shared == 'true' }}
+    uses: ./.github/workflows/cloudflare_deploy.yml
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+    with:
+      terraform_action: ${{ inputs.terraform_action }}
+      working_directory: ./infrastructure/cloudflare/shared
+      workspace: tokistack-cloudflare-shared
+
+  deploy_environments:
+    needs:
+      - changes
+      - deploy_shared
+    if: |
+      always()
+      && needs.changes.outputs.environments == 'true'
+      && (needs.deploy_shared.result == 'success' || needs.deploy_shared.result == 'skipped')
+    uses: ./.github/workflows/cloudflare_deploy.yml
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+    with:
+      terraform_action: ${{ inputs.terraform_action }}
+      working_directory: ./infrastructure/cloudflare/environments
+      workspace: tokistack-cloudflare-${{ inputs.cluster }}
+      var_file: ${{ inputs.cluster }}.tfvars

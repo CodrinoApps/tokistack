@@ -42,3 +42,11 @@ jobs:
       AWS_REGION: ${{ vars.AWS_REGION }}
     with:
       hash_or_version: ${{ github.sha }}
+
+  deploy_cloudflare:
+    uses: ./.github/workflows/cloudflare_pipeline.yml
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+    with:
+      terraform_action: apply
+      cluster: testing

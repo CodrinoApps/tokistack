@@ -1,0 +1,57 @@
+name: Cloudflare_Deploy
+
+on:
+  workflow_call:
+    inputs:
+      terraform_action:
+        description: "Terraform action to run (plan or apply)"
+        required: true
+        type: string
+      working_directory:
+        description: "Terraform root module directory (shared or environments)"
+        required: true
+        type: string
+      workspace:
+        description: "TFC workspace name"
+        required: true
+        type: string
+      var_file:
+        description: "Path to tfvars file (relative to working_directory)"
+        required: false
+        type: string
+        default: ""
+    secrets:
+      TF_API_TOKEN:
+        required: true
+
+jobs:
+  terraform:
+    runs-on: ubuntu-24.04-arm
+    permissions:
+      contents: read
+    defaults:
+      run:
+        working-directory: ${{ inputs.working_directory }}
+    env:
+      TF_CLOUD_ORGANIZATION: Codrino
+      TF_WORKSPACE: ${{ inputs.workspace }}
+      TF_TOKEN_app_terraform_io: ${{ secrets.TF_API_TOKEN }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: hashicorp/setup-terraform@b9cd54a3c349d3f38e8881555d616ced269862dd # v3.2.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        if: inputs.terraform_action == 'plan'
+        run: >-
+          terraform plan
+          ${{ inputs.var_file != '' && format('-var-file={0}', inputs.var_file) || '' }}
+
+      - name: Terraform Apply
+        if: inputs.terraform_action == 'apply'
+        run: >-
+          terraform apply -auto-approve
+          ${{ inputs.var_file != '' && format('-var-file={0}', inputs.var_file) || '' }}
