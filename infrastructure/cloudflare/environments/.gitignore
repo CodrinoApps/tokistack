@@ -1,0 +1,8 @@
+# Terraform working directory
+.terraform/
+
+# Plan files
+*.tfplan
+
+# Auto-generated tfvars
+*.auto.tfvars
