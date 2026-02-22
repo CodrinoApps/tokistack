@@ -7,8 +7,8 @@
   "scripts": {
     "turbo:build": "turbo run build",
     "turbo:build:api": "turbo run build --filter=@tokistack/api",
-    "lint": "eslint . --ext .ts,.tsx",
-    "lint:fix": "eslint . --ext .ts,.tsx --fix",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "stylelint": "dprint check",
     "prepare": "husky"
   },
@@ -22,9 +22,10 @@
     "@commitlint/cli": "20.4.1",
     "@commitlint/config-conventional": "20.4.1",
     "@eslint/js": "9.39.2",
-    "eslint-plugin-jest": "29.12.2",
+    "angular-eslint": "21.2.0",
     "dprint": "0.51.1",
     "eslint": "9.39.2",
+    "eslint-plugin-jest": "29.12.2",
     "husky": "9.1.7",
     "lint-staged": "16.2.7",
     "turbo": "2.8.3",
