@@ -17,6 +17,7 @@
     "**/coverage",
     "**/jest.config.js",
     "**/*-lock.json",
+    "pnpm-lock.yaml",
     ".yarn/*"
   ],
   "plugins": [

@@ -1,0 +1,32 @@
+{
+  "name": "@tokistack/web",
+  "version": "1.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test --watch",
+    "test:ci": "ng test --no-watch"
+  },
+  "private": true,
+  "dependencies": {
+    "@angular/common": "21.1.5",
+    "@angular/compiler": "21.1.5",
+    "@angular/core": "21.1.5",
+    "@angular/forms": "21.1.5",
+    "@angular/platform-browser": "21.1.5",
+    "@angular/router": "21.1.5",
+    "rxjs": "7.8.2",
+    "tslib": "2.8.1"
+  },
+  "devDependencies": {
+    "@angular/build": "21.1.4",
+    "@angular/cli": "21.1.4",
+    "@angular/compiler-cli": "21.1.5",
+    "jsdom": "28.1.0",
+    "typescript": "5.9.3",
+    "vitest": "4.0.18",
+    "wrangler": "4.67.0"
+  }
+}

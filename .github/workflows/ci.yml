@@ -50,3 +50,12 @@ jobs:
     with:
       terraform_action: apply
       cluster: testing
+
+  deploy_web:
+    needs: [run_tests, deploy_cloudflare]
+    uses: ./.github/workflows/cloudflare_pipeline_web.yml
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    with:
+      cluster: testing

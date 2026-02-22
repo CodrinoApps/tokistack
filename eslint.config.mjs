@@ -1,13 +1,12 @@
 // @ts-check
 
 import eslint from "@eslint/js";
+import angular from "angular-eslint";
 import eslintPluginJest from "eslint-plugin-jest";
 import { defineConfig } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default defineConfig(
-  eslint.configs.recommended,
-  tseslint.configs.recommended,
   {
     ignores: [
       "**/node_modules/*",
@@ -23,16 +22,38 @@ export default defineConfig(
     ],
   },
   {
+    files: ["**/*.ts"],
+    extends: [
+      eslint.configs.recommended,
+      tseslint.configs.recommended,
+    ],
     rules: {
       "no-console": "error",
+    },
+  },
+  {
+    files: ["apps/api/**/*.ts", "apps/migrator/**/*.ts", "packages/**/*.ts", "infrastructure/**/*.ts"],
+    plugins: {
+      jest: eslintPluginJest,
+    },
+    rules: {
       "jest/no-disabled-tests": "warn",
       "jest/no-focused-tests": "error",
       "jest/no-identical-title": "error",
     },
   },
   {
-    plugins: {
-      jest: eslintPluginJest,
-    },
+    files: ["apps/web/**/*.ts"],
+    extends: [
+      ...angular.configs.tsRecommended,
+    ],
+    processor: angular.processInlineTemplates,
+  },
+  {
+    files: ["apps/web/**/*.html"],
+    extends: [
+      ...angular.configs.templateRecommended,
+      ...angular.configs.templateAccessibility,
+    ],
   },
 );
