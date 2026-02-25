@@ -14,6 +14,11 @@ on:
         description: "Target environment cluster (testing or production)"
         required: true
         type: string
+      release_mode:
+        description: "Skip path filtering and deploy unconditionally"
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   changes:
@@ -22,11 +27,12 @@ jobs:
       contents: read
       pull-requests: read
     outputs:
-      shared: ${{ steps.filter.outputs.shared }}
-      environments: ${{ steps.filter.outputs.environments }}
+      shared: ${{ inputs.release_mode && 'true' || steps.filter.outputs.shared }}
+      environments: ${{ inputs.release_mode && 'true' || steps.filter.outputs.environments }}
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - uses: dorny/paths-filter@de90cc6fb38fc0963ad72b210f1f284cd68cea36 # v3.0.2
+        if: ${{ !inputs.release_mode }}
         id: filter
         with:
           filters: |
