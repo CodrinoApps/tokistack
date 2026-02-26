@@ -1,0 +1,126 @@
+name: Release
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+
+concurrency:
+  group: release-production
+  cancel-in-progress: false
+
+jobs:
+  # Create changelog and tag a release
+  create-release:
+    runs-on: ubuntu-24.04-arm
+    outputs:
+      release_version: ${{ steps.version.outputs.version }}
+      skipped: ${{ steps.version.outputs.skipped }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Determine version
+        id: version
+        run: |
+          TODAY=$(date -u +%Y-%m-%d)
+
+          # Find existing tags for today and get the highest number
+          EXISTING=$(git tag -l "v${TODAY}.*" | sort -t. -k4 -n | tail -1)
+
+          if [ -z "$EXISTING" ]; then
+            NUMBER=1
+          else
+            # Extract the number after the last dot
+            LAST_NUMBER=$(echo "$EXISTING" | rev | cut -d. -f1 | rev)
+            NUMBER=$((LAST_NUMBER + 1))
+          fi
+
+          VERSION="v${TODAY}.${NUMBER}"
+          echo "version=${VERSION}" >> $GITHUB_OUTPUT
+
+          # Check if there are new commits since last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          if [ -n "$LAST_TAG" ]; then
+            COMMITS=$(git rev-list ${LAST_TAG}..HEAD --count)
+            if [ "$COMMITS" -eq 0 ]; then
+              echo "skipped=true" >> $GITHUB_OUTPUT
+              exit 0
+            fi
+          fi
+          echo "skipped=false" >> $GITHUB_OUTPUT
+
+      - name: Generate changelog
+        if: steps.version.outputs.skipped != 'true'
+        id: changelog
+        uses: orhun/git-cliff-action@c93ef52f3d0ddcdcc9bd5447d98d458a11cd4f72 # v4.7.1
+        with:
+          config: cliff.toml
+          args: --unreleased --strip header
+
+      - name: Create tag
+        if: steps.version.outputs.skipped != 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git tag ${{ steps.version.outputs.version }}
+          git push origin ${{ steps.version.outputs.version }}
+
+      - name: Create Release
+        if: steps.version.outputs.skipped != 'true'
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b # v2.5.0
+        with:
+          tag_name: ${{ steps.version.outputs.version }}
+          name: ${{ steps.version.outputs.version }}
+          body: ${{ steps.changelog.outputs.content }}
+
+  build_migrator_and_apply_pending_migrations:
+    needs: create-release
+    if: needs.create-release.outputs.skipped != 'true'
+    secrets:
+      DB_BRANCH: ${{ secrets.NEON_DB_PROD }}
+      DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+      DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+    uses: ./.github/workflows/db_migrator.yml
+    with:
+      hash_or_version: ${{ needs.create-release.outputs.release_version }}
+      release_mode: true
+
+  run_aws_api_pipeline:
+    needs:
+      - create-release
+    if: needs.create-release.outputs.skipped != 'true'
+    secrets:
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_PRODUCTION_ROLE }}
+      AWS_REGION: ${{ vars.AWS_REGION }}
+    uses: ./.github/workflows/aws_pipeline_api.yml
+    with:
+      hash_or_version: ${{ needs.create-release.outputs.release_version }}
+      release_mode: true
+
+  deploy_cloudflare:
+    needs: create-release
+    if: needs.create-release.outputs.skipped != 'true'
+    uses: ./.github/workflows/cloudflare_pipeline.yml
+    secrets:
+      TF_API_TOKEN: ${{ secrets.TF_API_TOKEN }}
+    with:
+      terraform_action: apply
+      cluster: production
+      release_mode: true
+
+  deploy_web:
+    needs:
+      - create-release
+      - deploy_cloudflare
+    if: needs.create-release.outputs.skipped != 'true'
+    uses: ./.github/workflows/cloudflare_pipeline_web.yml
+    secrets:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+    with:
+      cluster: production
+      release_mode: true
