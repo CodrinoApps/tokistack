@@ -78,6 +78,12 @@ resource "cloudflare_workers_custom_domain" "proxy" {
   hostname   = local.fqdn
   service    = cloudflare_workers_script.proxy.script_name
   zone_id    = var.zone_id
+
+  lifecycle {
+    # environment is deprecated but set to default "production" by the Cloudflare API. Ignored to prevent drift issues.
+    # see https://github.com/cloudflare/terraform-provider-cloudflare/blob/main/internal/services/workers_custom_domain/schema.go#L48
+    ignore_changes = [environment]
+  }
 }
 
 # --- Rate limiting ---
