@@ -63,6 +63,9 @@ importers:
       '@tokistack/typescript-config':
         specifier: workspace:*
         version: link:../../packages/tsconfig
+      '@types/aws-lambda':
+        specifier: 8.10.161
+        version: 8.10.161
       '@types/jest':
         specifier: 30.0.0
         version: 30.0.0
@@ -314,6 +317,9 @@ importers:
       '@tokistack/typescript-config':
         specifier: workspace:*
         version: link:../tsconfig
+      '@types/aws-lambda':
+        specifier: 8.10.161
+        version: 8.10.161
       '@types/jest':
         specifier: 30.0.0
         version: 30.0.0
@@ -2972,6 +2978,9 @@ packages:
 
   '@types/aws-lambda@8.10.149':
     resolution: {integrity: sha512-NXSZIhfJjnXqJgtS7IwutqIF/SOy1Wz5Px4gUY1RWITp3AYTyuJS4xaXr/bIJY1v15XMzrJ5soGnPM+7uigZjA==}
+
+  '@types/aws-lambda@8.10.161':
+    resolution: {integrity: sha512-rUYdp+MQwSFocxIOcSsYSF3YYYC/uUpMbCY/mbO21vGqfrEYvNSoPyKYDj6RhXXpPfS0KstW9RwG3qXh9sL7FQ==}
 
   '@types/babel__core@7.20.5':
     resolution: {integrity: sha512-qoQprZvz5wQFJwMDqeseRXWv3rqMvhgpbXFfVyWhbx9X47POIA6i/+dXefEmZKoAgOaTdaIgNSMqMIU61yRyzA==}
@@ -9091,6 +9100,8 @@ snapshots:
     optional: true
 
   '@types/aws-lambda@8.10.149': {}
+
+  '@types/aws-lambda@8.10.161': {}
 
   '@types/babel__core@7.20.5':
     dependencies:

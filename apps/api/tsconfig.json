@@ -1,7 +1,11 @@
 {
   "extends": "@tokistack/typescript-config/base.tsconfig.json",
   "compilerOptions": {
-    "types": ["jest", "node"],
+    "types": [
+      "aws-lambda",
+      "jest",
+      "node"
+    ],
     "noEmit": true
   },
   "include": [

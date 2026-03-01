@@ -17,6 +17,7 @@
   "devDependencies": {
     "@tokistack/test-utils": "workspace:*",
     "@tokistack/typescript-config": "workspace:*",
+    "@types/aws-lambda": "8.10.161",
     "@types/jest": "30.0.0",
     "@types/node": "25.2.2",
     "dotenv": "17.2.3",
