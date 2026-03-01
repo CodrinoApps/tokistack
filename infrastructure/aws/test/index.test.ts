@@ -99,8 +99,8 @@ describe("ApiStack", () => {
     template = makeApiStack();
   });
 
-  test("exactly one Lambda function is created", () => {
-    template.resourceCountIs("AWS::Lambda::Function", 1);
+  test("exactly two Lambda functions are created", () => {
+    template.resourceCountIs("AWS::Lambda::Function", 2);
   });
 
   test("Lambda function name follows tokistack-{cluster}-api convention", () => {
@@ -109,16 +109,53 @@ describe("ApiStack", () => {
     });
   });
 
-  test("Lambda uses Node.js 24 runtime", () => {
+  test("Authorizer function name follows tokistack-{cluster}-authorizer convention", () => {
     template.hasResourceProperties("AWS::Lambda::Function", {
-      Runtime: "nodejs24.x",
+      FunctionName: "tokistack-testing-authorizer",
     });
   });
 
-  test("Lambda log group has 30-day retention", () => {
+  test("Lambda uses Node.js 24 runtime on ARM", () => {
+    template.hasResourceProperties("AWS::Lambda::Function", {
+      Runtime: "nodejs24.x",
+      Architectures: ["arm64"],
+    });
+  });
+
+  test("API Lambda log group has 30-day retention", () => {
     template.hasResourceProperties("AWS::Logs::LogGroup", {
       LogGroupName: "/aws/lambda/tokistack-testing-api",
       RetentionInDays: 30,
+    });
+  });
+
+  test("Authorizer Lambda log group has 30-day retention", () => {
+    template.hasResourceProperties("AWS::Logs::LogGroup", {
+      LogGroupName: "/aws/lambda/tokistack-testing-authorizer",
+      RetentionInDays: 30,
+    });
+  });
+
+  test("HTTP API has a Lambda authorizer configured", () => {
+    template.resourceCountIs("AWS::ApiGatewayV2::Authorizer", 1);
+    template.hasResourceProperties("AWS::ApiGatewayV2::Authorizer", {
+      AuthorizerType: "REQUEST",
+      AuthorizerPayloadFormatVersion: "2.0",
+      EnableSimpleResponses: true,
+    });
+  });
+
+  test("auth routes are public (no authorizer)", () => {
+    template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+      RouteKey: "ANY /api/auth/{proxy+}",
+      AuthorizationType: "NONE",
+    });
+  });
+
+  test("catch-all route is protected by the authorizer", () => {
+    template.hasResourceProperties("AWS::ApiGatewayV2::Route", {
+      RouteKey: "ANY /{proxy+}",
+      AuthorizationType: "CUSTOM",
     });
   });
 
