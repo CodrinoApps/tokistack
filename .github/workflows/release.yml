@@ -5,6 +5,7 @@ on:
 permissions:
   id-token: write
   contents: write
+  pull-requests: read # required to satisfy static permission check for paths-filter
 
 concurrency:
   group: release-production
