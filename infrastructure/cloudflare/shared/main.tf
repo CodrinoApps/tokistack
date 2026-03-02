@@ -46,3 +46,28 @@ resource "cloudflare_leaked_credential_check" "default" {
   zone_id = cloudflare_zone.main.id
   enabled = true
 }
+
+# --- Rate limiting ---
+
+resource "cloudflare_ruleset" "rate_limiting" {
+  zone_id = cloudflare_zone.main.id
+  name    = "Rate limiting"
+  kind    = "zone"
+  phase   = "http_ratelimit"
+
+  rules = [
+    {
+      ref         = "rate_limit_auth"
+      description = "Strict rate limit on auth endpoints"
+      expression  = "(starts_with(http.request.uri.path, \"/api/auth/\"))"
+      action      = "block"
+      enabled     = true
+      ratelimit = {
+        characteristics     = ["cf.colo.id", "ip.src"]
+        period              = 10
+        requests_per_period = 2
+        mitigation_timeout  = 10
+      }
+    }
+  ]
+}
