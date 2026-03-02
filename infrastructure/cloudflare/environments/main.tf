@@ -85,28 +85,3 @@ resource "cloudflare_workers_custom_domain" "proxy" {
     ignore_changes = [environment]
   }
 }
-
-# --- Rate limiting ---
-
-resource "cloudflare_ruleset" "rate_limiting" {
-  zone_id = var.zone_id
-  name    = "Rate limiting (${var.cluster})"
-  kind    = "zone"
-  phase   = "http_ratelimit"
-
-  rules = [
-    {
-      ref         = "rate_limit_auth"
-      description = "Strict rate limit on auth endpoints"
-      expression  = "(http.host eq \"${local.fqdn}\" and starts_with(http.request.uri.path, \"/api/auth/\"))"
-      action      = "block"
-      enabled     = true
-      ratelimit = {
-        characteristics     = ["cf.colo.id", "ip.src"]
-        period              = 10
-        requests_per_period = 2
-        mitigation_timeout  = 10
-      }
-    }
-  ]
-}
