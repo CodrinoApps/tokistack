@@ -32,7 +32,7 @@ jobs:
       DOCKER_HUB_USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
       DOCKER_HUB_ACCESS_TOKEN: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
     with:
-      hash_or_version: ${{ github.sha }}
+      hash_or_version: ${{ github.event.pull_request.head.sha }}
 
   deploy_api:
     uses: ./.github/workflows/aws_pipeline_api.yml
@@ -41,7 +41,7 @@ jobs:
       AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_DEV_TESTING_ROLE }}
       AWS_REGION: ${{ vars.AWS_REGION }}
     with:
-      hash_or_version: ${{ github.sha }}
+      hash_or_version: ${{ github.event.pull_request.head.sha }}
 
   deploy_cloudflare:
     uses: ./.github/workflows/cloudflare_pipeline.yml

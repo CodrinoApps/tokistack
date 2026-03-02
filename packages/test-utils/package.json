@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@tokistack/typescript-config": "workspace:*",
+    "@types/aws-lambda": "8.10.161",
     "@types/jest": "30.0.0",
     "@types/node": "25.2.2",
     "typescript": "5.9.3"

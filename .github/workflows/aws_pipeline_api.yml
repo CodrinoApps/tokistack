@@ -35,6 +35,7 @@ jobs:
           filters: |
             src:
               - 'apps/api/**'
+              - 'apps/authorizer/**'
               - 'infrastructure/aws/**'
 
   deploy_artifacts_stack:

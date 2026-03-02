@@ -45,12 +45,25 @@ jobs:
       - name: Build API Lambda bundle
         run: pnpm turbo build --filter=@tokistack/api
 
-      - name: Package Lambda zip
+      - name: Package API Lambda zip
         run: |
           cd apps/api/dist
           zip -j api.zip index.js index.js.map
 
-      - name: Upload artifact to S3
+      - name: Upload API artifact to S3
         run: |
           aws s3 cp apps/api/dist/api.zip \
             s3://tokistack-${{ steps.cluster.outputs.name }}-artifacts/${{ inputs.hash_or_version }}/api.zip
+
+      - name: Build Authorizer Lambda bundle
+        run: pnpm turbo build --filter=@tokistack/authorizer
+
+      - name: Package Authorizer Lambda zip
+        run: |
+          cd apps/authorizer/dist
+          zip -j authorizer.zip index.js index.js.map
+
+      - name: Upload Authorizer artifact to S3
+        run: |
+          aws s3 cp apps/authorizer/dist/authorizer.zip \
+            s3://tokistack-${{ steps.cluster.outputs.name }}-artifacts/${{ inputs.hash_or_version }}/authorizer.zip
