@@ -1,0 +1,31 @@
+:root {
+  --border-width-none: 0;
+  --border-width-thin: 1px;
+  --border-width-default: 1.5px;
+  --border-width-thick: 2px;
+
+  --border-color-default: oklch(0% 0 0 / 0.12);
+  --border-color-muted: oklch(0% 0 0 / 0.06);
+  --border-color-strong: oklch(0% 0 0 / 0.2);
+  --border-color-accent: var(--color-primary);
+
+  --radius-selector: 1rem;
+  --radius-field: 0.5rem;
+  --radius-box: 1rem;
+}
+
+@mixin _dark {
+  --border-color-default: oklch(100% 0 0 / 0.12);
+  --border-color-muted: oklch(100% 0 0 / 0.06);
+  --border-color-strong: oklch(100% 0 0 / 0.2);
+}
+
+[data-theme="dark"] {
+  @include _dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include _dark;
+  }
+}

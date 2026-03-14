@@ -1,1 +1,52 @@
 <h1>Welcome to sign-in</h1>
+
+<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem">
+  <button toki-button variant="primary">Primary</button>
+  <button toki-button variant="secondary">Secondary</button>
+  <button toki-button variant="accent">Accent</button>
+  <button toki-button variant="neutral">Neutral</button>
+  <button toki-button variant="success">Success</button>
+  <button toki-button variant="ghost">Ghost</button>
+  <button toki-button variant="error">Error</button>
+  <button toki-button variant="error" disabled>Disabled</button>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem">
+  <button toki-button variant="primary" soft>Primary Soft</button>
+  <button toki-button variant="secondary" soft>Secondary Soft</button>
+  <button toki-button variant="accent" soft>Accent Soft</button>
+  <button toki-button variant="neutral" soft>Neutral Soft</button>
+  <button toki-button variant="success" soft>Success Soft</button>
+  <button toki-button variant="error" soft>Error Soft</button>
+  <button toki-button variant="error" soft disabled>Error Soft</button>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem">
+  <button toki-button variant="primary" outline>Primary Outline</button>
+  <button toki-button variant="secondary" outline>Secondary Outline</button>
+  <button toki-button variant="accent" outline>Accent Outline</button>
+  <button toki-button variant="neutral" outline>Neutral Outline</button>
+  <button toki-button variant="success" outline>Success Outline</button>
+  <button toki-button variant="error" outline>Error Outline</button>
+  <button toki-button variant="error" outline disabled>Error Outline</button>
+</div>
+
+<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem">
+  <button
+    toki-button
+    variant="primary"
+    [loading]="submitting()"
+    (click)="onSubmit()"
+  >
+    Submit
+  </button>
+  <button
+    toki-button
+    variant="secondary"
+    soft
+    [loading]="submitting()"
+    (click)="onSubmit()"
+  >
+    Saving...
+  </button>
+</div>

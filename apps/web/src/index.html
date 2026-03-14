@@ -1,11 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="utf-8">
+    <meta name="color-scheme" content="light dark">
     <title>Tokistack</title>
     <base href="/">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <style>
+    /* Inlined critical tokens to prevent FOUC before stylesheets load */
+    html, body {
+      margin: 0;
+    }
+    :root, [data-theme="light"] {
+      color-scheme: light;
+      background-color: oklch(100% 0 0);
+      color: oklch(41.886% 0.053 255.824);
+    }
+    [data-theme="dark"] {
+      color-scheme: dark;
+      background-color: oklch(20.768% 0.039 265.754);
+      color: oklch(84.153% 0.007 265.754);
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        color-scheme: dark;
+        background-color: oklch(20.768% 0.039 265.754);
+        color: oklch(84.153% 0.007 265.754);
+      }
+    }
+    </style>
   </head>
   <body>
     <app-root></app-root>

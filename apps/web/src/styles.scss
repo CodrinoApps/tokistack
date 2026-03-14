@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+@use "pkg:@tokistack/ui/tokens";
+
+*,
+::after,
+::backdrop,
+::before,
+::file-selector-button {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border: 0 solid;
+}
+
+body {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

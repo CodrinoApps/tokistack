@@ -1,0 +1,25 @@
+:root {
+  --focus-ring-width: 2px;
+  --focus-ring-color: var(--color-primary);
+  --focus-ring-offset: 2px;
+
+  --hover-overlay: oklch(0% 0 0 / 0.06);
+  --active-overlay: oklch(0% 0 0 / 0.1);
+
+  --disabled-opacity: 0.45;
+}
+
+@mixin _dark {
+  --hover-overlay: oklch(100% 0 0 / 0.08);
+  --active-overlay: oklch(100% 0 0 / 0.12);
+}
+
+[data-theme="dark"] {
+  @include _dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include _dark;
+  }
+}

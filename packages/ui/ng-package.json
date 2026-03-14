@@ -1,0 +1,17 @@
+{
+  "$schema": "node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "dist",
+  "assets": [
+    "src/lib/tokens/**/*.scss"
+  ],
+  "allowedNonPeerDependencies": [
+    "@fontsource-variable/geist",
+    "@fontsource-variable/outfit"
+  ],
+  "lib": {
+    "entryFile": "src/public-api.ts",
+    "styleIncludePaths": [
+      "."
+    ]
+  }
+}

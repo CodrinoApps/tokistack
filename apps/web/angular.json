@@ -68,6 +68,11 @@
         },
         "serve": {
           "builder": "@angular/build:dev-server",
+          "options": {
+            "prebundle": {
+              "exclude": ["@tokistack/ui"]
+            }
+          },
           "configurations": {
             "production": {
               "buildTarget": "web:build:production"
