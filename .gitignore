@@ -7,6 +7,9 @@ Thumbs.db
 # Dependencies
 node_modules
 
+# Environment
+.env
+
 # Build
 dist
 .turbo

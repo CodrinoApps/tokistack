@@ -63,8 +63,10 @@ jobs:
 
       - name: "Deploy CDK Stack: ${{ inputs.desired_stack }}"
         working-directory: ./infrastructure/aws
+        env:
+          CFN_PARAMS: ${{ inputs.cfn_parameters }}
         run: |
           pnpm cdk deploy ${{ inputs.desired_stack }} \
             --require-approval never \
             --context cluster=${{ steps.cluster.outputs.name }} \
-            ${{ inputs.cfn_parameters }}
+            ${CFN_PARAMS}
