@@ -2,10 +2,14 @@ import { ChangeDetectionStrategy, Component } from "@angular/core";
 import { RouterOutlet } from "@angular/router";
 
 @Component({
-  selector: "app-root",
+  selector: "auth-layout",
   imports: [RouterOutlet],
-  template: "<router-outlet />",
-  styleUrl: "./app.scss",
+  template: `
+    <div class="auth-layout">
+      <header>Theme / Language</header>
+      <main><router-outlet /></main>
+    </div>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class App {}
+export class AuthLayoutComponent {}
