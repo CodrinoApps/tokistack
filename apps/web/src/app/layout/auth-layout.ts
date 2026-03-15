@@ -5,11 +5,16 @@ import { RouterOutlet } from "@angular/router";
   selector: "auth-layout",
   imports: [RouterOutlet],
   template: `
-    <div class="auth-layout">
-      <header>Theme / Language</header>
-      <main><router-outlet /></main>
+    <div class="bg">
+      <div class="bg-gradient"></div>
+      <div class="bg-orb bg-orb--primary"></div>
+      <div class="bg-orb bg-orb--secondary"></div>
+      <div class="bg-orb bg-orb--accent"></div>
+      <div class="bg-dots"></div>
     </div>
+    <main><router-outlet /></main>
   `,
+  styleUrl: "./auth-layout.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthLayoutComponent {}

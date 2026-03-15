@@ -1,0 +1,70 @@
+@use "pkg:@tokistack/ui/typography" as type;
+
+:host {
+  display: block;
+  width: 28rem;
+  max-width: 100%;
+}
+
+.card {
+  background: var(--color-base-200);
+  border: var(--border-width-thin) solid var(--elevation-border);
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-8);
+
+  @media (max-width: 480px) {
+    padding: var(--space-6);
+  }
+}
+
+.title {
+  @include type.heading-4;
+  color: var(--color-base-content);
+  text-align: center;
+  margin: 0 0 var(--space-2);
+}
+
+.subtitle {
+  @include type.body-sm;
+  color: var(--color-base-500);
+  text-align: center;
+  padding: 0 0 var(--space-8);
+}
+
+.notice {
+  @include type.body-sm;
+  color: var(--color-info);
+  text-align: center;
+  padding: var(--space-8) 0 0;
+}
+
+toki-input {
+  margin-bottom: var(--space-6);
+}
+
+.divider {
+  @include type.body-sm;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin: var(--space-6) 0;
+  color: var(--color-base-500);
+
+  &::before,
+  &::after {
+    content: "";
+    flex: 1;
+    height: var(--border-width-thin);
+    background: var(--border-color-default);
+  }
+}
+
+.signup-prompt {
+  @include type.body-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  color: var(--color-base-500);
+}
