@@ -1,0 +1,119 @@
+:host {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: var(--space-4);
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+  max-width: 100%;
+  margin-block: auto;
+}
+
+.bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.bg-gradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    var(--color-base-300) 0%,
+    var(--color-base-200) 40%,
+    var(--color-base-300) 100%
+  );
+}
+
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  top: 50%;
+  left: 50%;
+  will-change: transform, opacity;
+
+  &--primary {
+    width: 36rem;
+    height: 36rem;
+    background: var(--color-primary);
+    opacity: 0.08;
+    animation: orbit-hour 120s linear infinite;
+  }
+
+  &--secondary {
+    width: 28rem;
+    height: 28rem;
+    background: var(--color-secondary);
+    opacity: 0.06;
+    animation: orbit-minute 60s linear infinite;
+  }
+
+  &--accent {
+    width: 20rem;
+    height: 20rem;
+    background: var(--color-accent);
+    opacity: 0.05;
+    animation: orbit-second 30s linear infinite;
+  }
+}
+
+.bg-dots {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    var(--color-base-content) 0.75px,
+    transparent 0.75px
+  );
+  background-size: 24px 24px;
+  opacity: 0.04;
+}
+
+@keyframes orbit-hour {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg) translateX(18rem)
+      rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg) translateX(18rem)
+      rotate(-360deg);
+  }
+}
+
+@keyframes orbit-minute {
+  from {
+    transform: translate(-50%, -50%) rotate(120deg) translateX(14rem)
+      rotate(-120deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(480deg) translateX(14rem)
+      rotate(-480deg);
+  }
+}
+
+@keyframes orbit-second {
+  from {
+    transform: translate(-50%, -50%) rotate(240deg) translateX(10rem)
+      rotate(-240deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(600deg) translateX(10rem)
+      rotate(-600deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-orb {
+    animation: none;
+  }
+}

@@ -1,52 +1,80 @@
-<h1>Welcome to sign-in</h1>
+<div class="card">
+  <h1 class="title">Sign in to Tokistack</h1>
+  <p class="subtitle">Welcome back! Please sign in to continue</p>
 
-<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem">
-  <button toki-button variant="primary">Primary</button>
-  <button toki-button variant="secondary">Secondary</button>
-  <button toki-button variant="accent">Accent</button>
-  <button toki-button variant="neutral">Neutral</button>
-  <button toki-button variant="success">Success</button>
-  <button toki-button variant="ghost">Ghost</button>
-  <button toki-button variant="error">Error</button>
-  <button toki-button variant="error" disabled>Disabled</button>
-</div>
+  <form (submit)="onSubmit($event)">
+    <toki-input
+      label="Email address"
+      type="email"
+      placeholder="you@example.com"
+      autocomplete="email"
+      [formField]="loginForm.email"
+    >
+      <svg
+        tokiPrefix
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <rect width="20" height="16" x="2" y="4" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </svg>
+    </toki-input>
 
-<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem">
-  <button toki-button variant="primary" soft>Primary Soft</button>
-  <button toki-button variant="secondary" soft>Secondary Soft</button>
-  <button toki-button variant="accent" soft>Accent Soft</button>
-  <button toki-button variant="neutral" soft>Neutral Soft</button>
-  <button toki-button variant="success" soft>Success Soft</button>
-  <button toki-button variant="error" soft>Error Soft</button>
-  <button toki-button variant="error" soft disabled>Error Soft</button>
-</div>
+    <toki-input
+      label="Password"
+      type="password"
+      placeholder="Enter your password"
+      autocomplete="current-password"
+      [formField]="loginForm.password"
+    >
+      <svg
+        tokiPrefix
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <rect width="18" height="11" x="3" y="11" rx="2" ry="2" />
+        <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+      </svg>
+    </toki-input>
 
-<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem">
-  <button toki-button variant="primary" outline>Primary Outline</button>
-  <button toki-button variant="secondary" outline>Secondary Outline</button>
-  <button toki-button variant="accent" outline>Accent Outline</button>
-  <button toki-button variant="neutral" outline>Neutral Outline</button>
-  <button toki-button variant="success" outline>Success Outline</button>
-  <button toki-button variant="error" outline>Error Outline</button>
-  <button toki-button variant="error" outline disabled>Error Outline</button>
-</div>
+    <button
+      toki-button
+      disabled
+      variant="primary"
+      type="submit"
+      [loading]="submitting()"
+      style="width: 100%"
+    >
+      Log in
+    </button>
+  </form>
 
-<div style="display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 2rem">
-  <button
-    toki-button
-    variant="primary"
-    [loading]="submitting()"
-    (click)="onSubmit()"
-  >
-    Submit
-  </button>
-  <button
-    toki-button
-    variant="secondary"
-    soft
-    [loading]="submitting()"
-    (click)="onSubmit()"
-  >
-    Saving...
-  </button>
+  <p class="notice">
+    Notice that 'Log in' and 'Sign up' are intentionally disabled while the App
+    is under construction.
+  </p>
+
+  <div class="divider">
+    <span>or</span>
+  </div>
+
+  <div class="signup-prompt">
+    <span>Don't have an account?</span>
+    <a toki-button variant="ghost" routerLink="/auth/sign-up" disabled
+    >Sign up</a>
+  </div>
 </div>
