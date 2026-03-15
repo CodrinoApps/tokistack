@@ -1,0 +1,29 @@
+:root {
+  --elevation-border: transparent;
+  --shadow-xs: 0 1px 2px oklch(0% 0 0 / 0.04);
+  --shadow-sm: 0 1px 3px oklch(0% 0 0 / 0.06), 0 1px 2px oklch(0% 0 0 / 0.04);
+  --shadow-md: 0 4px 8px oklch(0% 0 0 / 0.08), 0 2px 4px oklch(0% 0 0 / 0.04);
+  --shadow-lg: 0 12px 24px oklch(0% 0 0 / 0.1), 0 4px 8px oklch(0% 0 0 / 0.05);
+  --shadow-xl:
+    0 20px 40px oklch(0% 0 0 / 0.12),
+    0 8px 16px oklch(0% 0 0 / 0.06);
+}
+
+@mixin _dark {
+  --elevation-border: oklch(100% 0 0 / 0.06);
+  --shadow-xs: 0 1px 2px oklch(0% 0 0 / 0.2);
+  --shadow-sm: 0 1px 3px oklch(0% 0 0 / 0.3), 0 1px 2px oklch(0% 0 0 / 0.2);
+  --shadow-md: 0 4px 8px oklch(0% 0 0 / 0.35), 0 2px 4px oklch(0% 0 0 / 0.2);
+  --shadow-lg: 0 12px 24px oklch(0% 0 0 / 0.4), 0 4px 8px oklch(0% 0 0 / 0.25);
+  --shadow-xl: 0 20px 40px oklch(0% 0 0 / 0.5), 0 8px 16px oklch(0% 0 0 / 0.3);
+}
+
+[data-theme="dark"] {
+  @include _dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include _dark;
+  }
+}

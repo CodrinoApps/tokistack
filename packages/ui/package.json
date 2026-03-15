@@ -1,0 +1,57 @@
+{
+  "name": "@tokistack/ui",
+  "version": "1.0.0",
+  "private": true,
+  "sideEffects": false,
+  "scripts": {
+    "build": "ng-packagr -p ng-package.json",
+    "dev": "ng-packagr -p ng-package.json --watch",
+    "test": "ng test --watch",
+    "test:ci": "ng test --no-watch"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/types/tokistack-ui.d.ts",
+      "default": "./dist/fesm2022/tokistack-ui.mjs"
+    },
+    "./button": {
+      "types": "./dist/types/tokistack-ui-button.d.ts",
+      "default": "./dist/fesm2022/tokistack-ui-button.mjs"
+    },
+    "./tokens": {
+      "sass": "./src/lib/tokens/tokens.scss"
+    },
+    "./colors": {
+      "sass": "./src/lib/tokens/_colors.scss"
+    },
+    "./typography": {
+      "sass": "./src/lib/tokens/_typography.scss"
+    },
+    "./borders": {
+      "sass": "./src/lib/tokens/_borders.scss"
+    }
+  },
+  "dependencies": {
+    "@fontsource-variable/geist": "5.2.8",
+    "@fontsource-variable/outfit": "5.2.8",
+    "tslib": "2.8.1"
+  },
+  "peerDependencies": {
+    "@angular/common": ">=21.0.0",
+    "@angular/core": ">=21.0.0"
+  },
+  "devDependencies": {
+    "@angular/build": "21.2.2",
+    "@angular/cli": "21.2.2",
+    "@angular/common": "21.2.4",
+    "@angular/compiler": "21.2.4",
+    "@angular/compiler-cli": "21.2.4",
+    "@angular/core": "21.2.4",
+    "@angular/platform-browser": "21.2.4",
+    "@tokistack/typescript-config": "workspace:*",
+    "jsdom": "28.1.0",
+    "ng-packagr": "21.2.0",
+    "typescript": "5.9.3",
+    "vitest": "4.1.0"
+  }
+}

@@ -1,0 +1,68 @@
+:root,
+[data-theme="light"] {
+  color-scheme: light;
+
+  --color-base-100: oklch(100% 0 0);
+  --color-base-200: oklch(97.466% 0.011 259.822);
+  --color-base-300: oklch(93.268% 0.016 262.751);
+  --color-base-400: oklch(82.5% 0.018 260);
+  --color-base-500: oklch(70% 0.025 258);
+  --color-base-content: oklch(41.886% 0.053 255.824);
+
+  --color-primary: oklch(56.86% 0.255 257.57);
+  --color-primary-content: oklch(91.372% 0.051 257.57);
+  --color-secondary: oklch(42.551% 0.161 282.339);
+  --color-secondary-content: oklch(88.51% 0.032 282.339);
+  --color-accent: oklch(59.939% 0.191 335.171);
+  --color-accent-content: oklch(11.988% 0.038 335.171);
+  --color-neutral: oklch(19.616% 0.063 257.651);
+  --color-neutral-content: oklch(83.923% 0.012 257.651);
+
+  --color-info: oklch(60% 0.12 214.515);
+  --color-info-content: oklch(97% 0.01 214.515);
+  --color-success: oklch(58% 0.1 165);
+  --color-success-content: oklch(97% 0.01 165);
+  --color-warning: oklch(72% 0.12 71.47);
+  --color-warning-content: oklch(15% 0.02 71.47);
+  --color-error: oklch(58% 0.2 20.076);
+  --color-error-content: oklch(97% 0.01 20.076);
+}
+
+@mixin _dark {
+  color-scheme: dark;
+
+  --color-base-100: oklch(20.768% 0.039 265.754);
+  --color-base-200: oklch(19.314% 0.037 265.754);
+  --color-base-300: oklch(17.86% 0.034 265.754);
+  --color-base-400: oklch(35% 0.025 264);
+  --color-base-500: oklch(48% 0.018 263);
+  --color-base-content: oklch(84.153% 0.007 265.754);
+
+  --color-primary: oklch(75.351% 0.138 232.661);
+  --color-primary-content: oklch(15.07% 0.027 232.661);
+  --color-secondary: oklch(68.011% 0.158 276.934);
+  --color-secondary-content: oklch(13.602% 0.031 276.934);
+  --color-accent: oklch(72.36% 0.176 350.048);
+  --color-accent-content: oklch(14.472% 0.035 350.048);
+  --color-neutral: oklch(27.949% 0.036 260.03);
+  --color-neutral-content: oklch(85.589% 0.007 260.03);
+
+  --color-info: oklch(68.455% 0.148 237.251);
+  --color-info-content: oklch(15% 0.02 237.251);
+  --color-success: oklch(78.452% 0.132 181.911);
+  --color-success-content: oklch(15.69% 0.026 181.911);
+  --color-warning: oklch(83.242% 0.139 82.95);
+  --color-warning-content: oklch(16.648% 0.027 82.95);
+  --color-error: oklch(71.785% 0.17 13.118);
+  --color-error-content: oklch(14.357% 0.034 13.118);
+}
+
+[data-theme="dark"] {
+  @include _dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    @include _dark;
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "extends": "@tokistack/typescript-config/base.tsconfig.json",
+  "compilerOptions": {
+    "outDir": "./out-tsc/spec",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": ["ES2023", "dom"],
+    "types": [
+      "vitest/globals"
+    ]
+  },
+  "angularCompilerOptions": {
+    "strictTemplates": true,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "out-tsc"
+  ]
+}

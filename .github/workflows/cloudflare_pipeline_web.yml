@@ -34,6 +34,7 @@ jobs:
           filters: |
             web:
               - 'apps/web/**'
+              - 'packages/ui/**'
 
   deploy_frontend:
     needs: changes

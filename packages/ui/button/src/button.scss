@@ -1,0 +1,247 @@
+@use "../../src/lib/tokens/typography" as type;
+
+:host {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: var(--border-width-thin) solid transparent;
+  border-radius: var(--radius-field);
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  text-decoration: none;
+  font-family: var(--font-body);
+  line-height: 1;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out),
+    translate var(--duration-fast) var(--ease-out);
+}
+
+:host(.btn--sm) {
+  @include type.button-sm;
+  padding: var(--space-1) var(--space-3);
+}
+
+:host(.btn--md) {
+  @include type.button;
+  padding: var(--space-2) var(--space-4);
+}
+
+:host(.btn--lg) {
+  @include type.button-lg;
+  padding: var(--space-3) var(--space-6);
+}
+
+// --- Variants ---
+
+:host(.btn--primary) {
+  background-color: var(--color-primary);
+  color: var(--color-primary-content);
+  --btn-color: var(--color-primary);
+}
+
+:host(.btn--secondary) {
+  background-color: var(--color-secondary);
+  color: var(--color-secondary-content);
+  --btn-color: var(--color-secondary);
+}
+
+:host(.btn--accent) {
+  background-color: var(--color-accent);
+  color: var(--color-accent-content);
+  --btn-color: var(--color-accent);
+}
+
+:host(.btn--neutral) {
+  background-color: var(--color-neutral);
+  color: var(--color-neutral-content);
+  --btn-color: var(--color-base-content);
+}
+
+:host(.btn--success) {
+  background-color: var(--color-success);
+  color: var(--color-success-content);
+  --btn-color: var(--color-success);
+}
+
+:host(.btn--ghost) {
+  background-color: transparent;
+  color: var(--color-base-content);
+}
+
+:host(.btn--error) {
+  background-color: var(--color-error);
+  color: var(--color-error-content);
+  --btn-color: var(--color-error);
+}
+
+:host(.btn--warning) {
+  background-color: var(--color-warning);
+  color: var(--color-warning-content);
+  --btn-color: var(--color-warning);
+}
+
+:host(.btn--info) {
+  background-color: var(--color-info);
+  color: var(--color-info-content);
+  --btn-color: var(--color-info);
+}
+
+// --- Soft modifier ---
+
+:host(.btn--soft) {
+  color: var(--btn-color);
+  background-color: color-mix(
+    in oklab,
+    var(--btn-color) 10%,
+    var(--color-base-100)
+  );
+  border-color: color-mix(
+    in oklab,
+    var(--btn-color) 12%,
+    var(--color-base-100)
+  );
+}
+
+:host(.btn--soft:hover:not(.btn--disabled)) {
+  background-color: color-mix(
+    in oklab,
+    var(--btn-color) 18%,
+    var(--color-base-100)
+  );
+  background-image: none;
+}
+
+:host(.btn--soft:active:not(.btn--disabled)) {
+  background-color: color-mix(
+    in oklab,
+    var(--btn-color) 24%,
+    var(--color-base-100)
+  );
+  background-image: none;
+}
+
+// --- Outline modifier ---
+
+:host(.btn--outline) {
+  background-color: transparent;
+  color: var(--btn-color);
+  border-color: color-mix(
+    in oklab,
+    var(--btn-color) 40%,
+    var(--color-base-100)
+  );
+}
+
+:host(.btn--outline:hover:not(.btn--disabled)) {
+  background-color: color-mix(
+    in oklab,
+    var(--btn-color) 8%,
+    var(--color-base-100)
+  );
+  background-image: none;
+}
+
+:host(.btn--outline:active:not(.btn--disabled)) {
+  background-color: color-mix(
+    in oklab,
+    var(--btn-color) 14%,
+    var(--color-base-100)
+  );
+  background-image: none;
+  translate: 0 0.5px;
+}
+
+// --- Interactive states ---
+
+:host(:hover:not(.btn--disabled)) {
+  background-image: linear-gradient(var(--hover-overlay), var(--hover-overlay));
+  box-shadow: var(--shadow-sm);
+}
+
+:host(:active:not(.btn--disabled)) {
+  background-image: linear-gradient(
+    var(--active-overlay),
+    var(--active-overlay)
+  );
+  box-shadow: none;
+  translate: 0 0.5px;
+}
+
+:host(.btn--ghost:hover:not(.btn--disabled)) {
+  background-color: var(--hover-overlay);
+  background-image: none;
+  box-shadow: none;
+}
+
+:host(.btn--ghost:active:not(.btn--disabled)) {
+  background-color: var(--active-overlay);
+  background-image: none;
+  translate: 0 0.5px;
+}
+
+:host(:focus-visible) {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+:host(.btn--disabled) {
+  opacity: var(--disabled-opacity);
+  cursor: default;
+}
+
+// --- Loading ---
+
+@keyframes btn-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+.btn__content {
+  display: inline-flex;
+  align-items: center;
+  gap: inherit;
+}
+
+:host(.btn--loading) .btn__content {
+  visibility: hidden;
+}
+
+.btn__spinner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &::after {
+    content: "";
+    width: 1em;
+    height: 1em;
+    border-radius: 50%;
+    border: 2px solid currentColor;
+    border-top-color: transparent;
+    animation: btn-spin var(--duration-spinner) linear infinite;
+  }
+}
+
+// --- Icon-only ---
+
+:host(.btn--icon-only.btn--sm) {
+  padding: var(--space-1);
+  aspect-ratio: 1;
+}
+
+:host(.btn--icon-only.btn--md) {
+  padding: var(--space-2);
+  aspect-ratio: 1;
+}
+
+:host(.btn--icon-only.btn--lg) {
+  padding: var(--space-3);
+  aspect-ratio: 1;
+}
