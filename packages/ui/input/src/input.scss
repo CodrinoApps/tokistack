@@ -1,0 +1,101 @@
+@use "../../src/lib/tokens/typography" as type;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host(.input--hidden) {
+  display: none;
+}
+
+.input__label {
+  @include type.label;
+  display: block;
+  color: var(--color-base-content);
+  margin-bottom: var(--space-2);
+}
+
+.input__required {
+  color: var(--color-error);
+}
+
+.input__wrapper {
+  display: flex;
+  align-items: center;
+  border: var(--border-width-thin) solid var(--border-color-default);
+  border-radius: var(--radius-field);
+  background: transparent;
+  transition: border-color var(--duration-fast) var(--ease-out);
+
+  &:focus-within {
+    border-color: var(--color-primary);
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  &--invalid {
+    border-color: var(--color-error);
+
+    &:focus-within {
+      border-color: var(--color-error);
+      outline-color: var(--color-error);
+    }
+  }
+
+  &--disabled {
+    opacity: var(--disabled-opacity);
+    cursor: not-allowed;
+  }
+}
+
+.input__native {
+  @include type.body-base;
+  flex: 1;
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  color: var(--color-base-content);
+  border: none;
+  outline: none;
+  box-sizing: border-box;
+
+  &::placeholder {
+    color: var(--color-base-500);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.input__prefix,
+.input__suffix {
+  display: flex;
+  align-items: center;
+  color: var(--color-base-500);
+
+  &:empty {
+    display: none;
+  }
+}
+
+.input__prefix {
+  padding-left: var(--space-3);
+}
+
+.input__suffix {
+  padding-right: var(--space-3);
+}
+
+.input__errors {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.input__error {
+  @include type.caption;
+  color: var(--color-error);
+}

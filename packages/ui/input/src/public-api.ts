@@ -1,0 +1,1 @@
+export { TokiInputComponent } from "./input";
