@@ -2,6 +2,7 @@
   "extends": "@tokistack/typescript-config/base.tsconfig.json",
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": ".",
     "module": "preserve",
     "moduleResolution": "bundler",
     "lib": ["ES2023", "dom"]
