@@ -4,16 +4,15 @@ import { provideStore } from "@ngrx/store";
 import { App } from "./app";
 
 describe("App", () => {
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [App],
       providers: [provideRouter([]), provideStore({})],
-    }).compileComponents();
+    });
   });
 
   it("should create the app", () => {
     const fixture = TestBed.createComponent(App);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 });

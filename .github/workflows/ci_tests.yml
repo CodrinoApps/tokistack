@@ -102,7 +102,7 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
 
       - name: Run UI tests
-        run: pnpm --filter @tokistack/ui test:ci
+        run: pnpm turbo test:ci --filter=@tokistack/ui
 
   run_web_tests:
     runs-on: ubuntu-24.04-arm
@@ -116,7 +116,7 @@ jobs:
           node-version: ${{ vars.NODE_VERSION }}
 
       - name: Run web tests
-        run: pnpm --filter @tokistack/web test:ci
+        run: pnpm turbo test:ci --filter=@tokistack/web
 
   ci-success:
     runs-on: ubuntu-24.04-arm

@@ -1,0 +1,25 @@
+{
+  "name": "@tokistack/i18n",
+  "version": "1.0.0",
+  "description": "Translations and i18n tooling for Tokistack",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "validate": "node scripts/validate-translations.ts"
+  },
+  "exports": {
+    "./locales/*": "./locales/*",
+    "./generated": {
+      "types": "./generated/translation-keys.ts",
+      "default": "./generated/translation-keys.ts"
+    }
+  },
+  "dependencies": {
+    "@tokistack/logger": "workspace:*"
+  },
+  "devDependencies": {
+    "@tokistack/typescript-config": "workspace:*",
+    "@types/node": "25.2.2",
+    "typescript": "5.9.3"
+  }
+}

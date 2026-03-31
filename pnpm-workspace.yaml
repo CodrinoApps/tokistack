@@ -2,3 +2,4 @@ packages:
   - "apps/*"
   - "packages/*"
   - "infrastructure/aws"
+minimumReleaseAge: 4320
