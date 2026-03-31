@@ -1,9 +1,10 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners } from "@angular/core";
+import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from "@angular/core";
 import { provideRouter, withComponentInputBinding } from "@angular/router";
 import { provideDispatcher } from "@ngrx/signals/events";
 import { provideStoreDevtools } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment";
 import { routes } from "./app.routes";
+import { TranslateService } from "./common/services/translate.service";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,5 +12,9 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes, withComponentInputBinding()),
     provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
     provideDispatcher(),
+    provideAppInitializer(() => {
+      const translate = inject(TranslateService);
+      return translate.setLocale(translate.locale());
+    }),
   ],
 };

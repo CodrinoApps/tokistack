@@ -1,12 +1,12 @@
 <div class="card">
-  <h1 class="title">Sign in to Tokistack</h1>
-  <p class="subtitle">Welcome back! Please sign in to continue</p>
+  <h1 class="title">{{ translate.t('auth.signIn.title') }}</h1>
+  <p class="subtitle">{{ translate.t('auth.signIn.subtitle') }}</p>
 
   <form (submit)="onSubmit($event)">
     <toki-input
-      label="Email address"
+      [label]="translate.t('auth.signIn.emailLabel')"
       type="email"
-      placeholder="you@example.com"
+      [placeholder]="translate.t('auth.signIn.emailPlaceholder')"
       autocomplete="email"
       [formField]="loginForm.email"
     >
@@ -28,9 +28,9 @@
     </toki-input>
 
     <toki-input
-      label="Password"
+      [label]="translate.t('auth.signIn.passwordLabel')"
       type="password"
-      placeholder="Enter your password"
+      [placeholder]="translate.t('auth.signIn.passwordPlaceholder')"
       autocomplete="current-password"
       [formField]="loginForm.password"
     >
@@ -59,22 +59,21 @@
       [loading]="submitting()"
       style="width: 100%"
     >
-      Log in
+      {{ translate.t('auth.signIn.submit') }}
     </button>
   </form>
 
   <p class="notice">
-    Notice that 'Log in' and 'Sign up' are intentionally disabled while the App
-    is under construction.
+    {{ translate.t('auth.signIn.notice') }}
   </p>
 
   <div class="divider">
-    <span>or</span>
+    <span>{{ translate.t('auth.signIn.or') }}</span>
   </div>
 
   <div class="signup-prompt">
-    <span>Don't have an account?</span>
+    <span>{{ translate.t('auth.signIn.noAccount') }}</span>
     <a toki-button variant="ghost" routerLink="/auth/sign-up" disabled
-    >Sign up</a>
+    >{{ translate.t('auth.signIn.signUp') }}</a>
   </div>
 </div>

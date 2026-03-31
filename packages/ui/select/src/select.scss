@@ -1,0 +1,206 @@
+@use "../../src/lib/tokens/typography" as type;
+
+:host {
+  display: block;
+  width: 100%;
+}
+
+:host(.select--hidden) {
+  display: none;
+}
+
+.select__label {
+  @include type.label;
+  display: block;
+  color: var(--color-base-content);
+  margin-bottom: var(--space-2);
+  cursor: pointer;
+}
+
+.select__required {
+  color: var(--color-error);
+}
+
+.select__container {
+  position: relative;
+}
+
+.select__trigger {
+  @include type.body-base;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  color: var(--color-base-content);
+  border: var(--border-width-thin) solid var(--border-color-default);
+  border-radius: var(--radius-field);
+  cursor: pointer;
+  transition: border-color var(--duration-fast) var(--ease-out);
+  text-align: left;
+
+  &:has(.select__input:focus-visible) {
+    border-color: var(--color-primary);
+    outline: var(--focus-ring-width) solid var(--focus-ring-color);
+    outline-offset: var(--focus-ring-offset);
+  }
+
+  &--placeholder {
+    color: var(--color-base-500);
+  }
+
+  &--open {
+    border-color: var(--color-primary);
+  }
+
+  &--invalid {
+    border-color: var(--color-error);
+
+    &:has(.select__input:focus-visible) {
+      border-color: var(--color-error);
+      outline-color: var(--color-error);
+    }
+  }
+
+  &--disabled {
+    opacity: var(--disabled-opacity);
+    cursor: not-allowed;
+  }
+
+  &--icon {
+    width: auto;
+    padding: var(--space-2);
+    border: none;
+    border-radius: var(--radius-field);
+    justify-content: center;
+    color: var(--color-base-content);
+
+    &:hover {
+      background-color: var(--hover-overlay);
+    }
+  }
+}
+
+// Hidden input overlays the trigger to capture all interactions.
+// The combobox pattern handles keyboard, click, focus, and ARIA.
+.select__input {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.select__value {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.select__arrow {
+  width: 1.25em;
+  height: 1.25em;
+  flex-shrink: 0;
+  transition: transform var(--duration-fast) var(--ease-out);
+
+  .select__trigger--open & {
+    transform: rotate(180deg);
+  }
+}
+
+.select__panel {
+  position: absolute;
+  left: auto;
+  right: 0;
+  min-width: 10rem;
+  top: calc(100% + var(--space-1));
+  z-index: 50;
+  max-height: 15rem;
+  overflow-y: auto;
+  background: var(--color-base-100);
+  border: var(--border-width-thin) solid var(--border-color-default);
+  border-radius: var(--radius-field);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-1) 0;
+  margin: 0;
+  list-style: none;
+  animation: select-enter var(--duration-normal) var(--ease-out);
+
+  &--closed {
+    display: none;
+  }
+
+  &--above {
+    top: auto;
+    bottom: calc(100% + var(--space-1));
+    animation-name: select-enter-above;
+  }
+}
+
+@keyframes select-enter {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes select-enter-above {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.select__option {
+  @include type.body-base;
+  padding: var(--space-2) var(--space-4);
+  cursor: pointer;
+  transition: background-color var(--duration-instant) var(--ease-out);
+
+  &:hover {
+    background-color: var(--hover-overlay);
+  }
+
+  &[aria-selected="true"] {
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  &[aria-disabled="true"] {
+    opacity: var(--disabled-opacity);
+    cursor: not-allowed;
+  }
+}
+
+.select__errors {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.select__error {
+  @include type.caption;
+  color: var(--color-error);
+}

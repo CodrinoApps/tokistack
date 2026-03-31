@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, signal } from "@angular/core";
+import { ChangeDetectionStrategy, Component, inject, signal } from "@angular/core";
 import { email, form, FormField, required } from "@angular/forms/signals";
 import { RouterLink } from "@angular/router";
 import { ButtonComponent } from "@tokistack/ui/button";
 import { TokiInputComponent } from "@tokistack/ui/input";
+import { TranslateService } from "../../common/services/translate.service";
 
 @Component({
   selector: "app-sign-in",
@@ -12,13 +13,14 @@ import { TokiInputComponent } from "@tokistack/ui/input";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInComponent {
+  protected readonly translate = inject(TranslateService);
   readonly submitting = signal(false);
 
   readonly loginModel = signal({ email: "", password: "" });
   readonly loginForm = form(this.loginModel, (schema) => {
-    required(schema.email, { message: "Email is required" });
-    email(schema.email, { message: "Enter a valid email address" });
-    required(schema.password, { message: "Password is required" });
+    required(schema.email, { message: "auth.signIn.validation.emailRequired" });
+    email(schema.email, { message: "auth.signIn.validation.emailInvalid" });
+    required(schema.password, { message: "auth.signIn.validation.passwordRequired" });
   });
 
   onSubmit(event: Event) {

@@ -30,6 +30,11 @@
               {
                 "glob": "**/*",
                 "input": "public"
+              },
+              {
+                "glob": "*.json",
+                "input": "node_modules/@tokistack/i18n/locales",
+                "output": "/locale"
               }
             ],
             "styles": [
@@ -70,7 +75,9 @@
           "builder": "@angular/build:dev-server",
           "options": {
             "prebundle": {
-              "exclude": ["@tokistack/ui"]
+              "exclude": [
+                "@tokistack/ui"
+              ]
             }
           },
           "configurations": {
@@ -85,7 +92,10 @@
           "defaultConfiguration": "development"
         },
         "test": {
-          "builder": "@angular/build:unit-test"
+          "builder": "@angular/build:unit-test",
+          "options": {
+            "providersFile": "src/test-providers.ts"
+          }
         }
       }
     }

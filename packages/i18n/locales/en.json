@@ -1,0 +1,16 @@
+{
+  "auth.signIn.title": "Sign in to Tokistack",
+  "auth.signIn.subtitle": "Welcome back! Please sign in to continue",
+  "auth.signIn.emailLabel": "Email address",
+  "auth.signIn.emailPlaceholder": "you@example.com",
+  "auth.signIn.passwordLabel": "Password",
+  "auth.signIn.passwordPlaceholder": "Enter your password",
+  "auth.signIn.submit": "Log in",
+  "auth.signIn.notice": "Notice that 'Log in' and 'Sign up' are intentionally disabled while the App is under construction.",
+  "auth.signIn.or": "or",
+  "auth.signIn.noAccount": "Don't have an account?",
+  "auth.signIn.signUp": "Sign up",
+  "auth.signIn.validation.emailRequired": "Email is required",
+  "auth.signIn.validation.emailInvalid": "Enter a valid email address",
+  "auth.signIn.validation.passwordRequired": "Password is required"
+}

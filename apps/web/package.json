@@ -7,10 +7,15 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --watch",
-    "test:ci": "ng test --no-watch"
+    "test:ci": "ng test --no-watch",
+    "validate-translations": "pnpm --filter @tokistack/i18n validate",
+    "prebuild": "pnpm --filter @tokistack/i18n validate",
+    "prestart": "pnpm --filter @tokistack/i18n validate"
   },
   "private": true,
   "dependencies": {
+    "@angular/aria": "21.2.3",
+    "@angular/cdk": "21.2.3",
     "@angular/common": "21.2.4",
     "@angular/compiler": "21.2.4",
     "@angular/core": "21.2.4",
@@ -18,9 +23,10 @@
     "@angular/platform-browser": "21.2.4",
     "@angular/router": "21.2.4",
     "@ngrx/effects": "21.0.1",
-    "@ngrx/store": "21.0.1",
     "@ngrx/signals": "21.0.1",
+    "@ngrx/store": "21.0.1",
     "@tokistack/auth": "workspace:*",
+    "@tokistack/i18n": "workspace:*",
     "@tokistack/ui": "workspace:*",
     "rxjs": "7.8.2",
     "tslib": "2.8.1"
