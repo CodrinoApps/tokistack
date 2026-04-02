@@ -12,5 +12,8 @@
   "auth.signIn.signUp": "Registrieren",
   "auth.signIn.validation.emailRequired": "E-Mail ist erforderlich",
   "auth.signIn.validation.emailInvalid": "Gib eine gültige E-Mail-Adresse ein",
-  "auth.signIn.validation.passwordRequired": "Passwort ist erforderlich"
+  "auth.signIn.validation.passwordRequired": "Passwort ist erforderlich",
+  "layout.themeToggle.light": "Hell",
+  "layout.themeToggle.dark": "Dunkel",
+  "layout.themeToggle.system": "System"
 }
