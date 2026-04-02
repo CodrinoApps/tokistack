@@ -14,4 +14,7 @@ export type TranslationKey =
   | "auth.signIn.title"
   | "auth.signIn.validation.emailInvalid"
   | "auth.signIn.validation.emailRequired"
-  | "auth.signIn.validation.passwordRequired";
+  | "auth.signIn.validation.passwordRequired"
+  | "layout.themeToggle.dark"
+  | "layout.themeToggle.light"
+  | "layout.themeToggle.system";

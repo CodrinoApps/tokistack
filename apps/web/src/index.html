@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en">
   <head>
     <meta charset="utf-8">
     <meta name="color-scheme" content="light dark">
@@ -14,7 +14,7 @@
     }
     :root, [data-theme="light"] {
       color-scheme: light;
-      background-color: oklch(100% 0 0);
+      background-color: oklch(97.466% 0.011 259.822);
       color: oklch(41.886% 0.053 255.824);
     }
     [data-theme="dark"] {
@@ -30,6 +30,14 @@
       }
     }
     </style>
+    <script>
+    (function() {
+      var t = localStorage.getItem("theme");
+      if (t === "light" || t === "dark") {
+        document.documentElement.setAttribute("data-theme", t);
+      }
+    })();
+    </script>
   </head>
   <body>
     <app-root></app-root>

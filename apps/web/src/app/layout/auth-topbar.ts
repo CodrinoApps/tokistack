@@ -1,12 +1,15 @@
 import { ChangeDetectionStrategy, Component, inject } from "@angular/core";
 import { type SelectOption, TokiSelectComponent } from "@tokistack/ui/select";
+import { ThemeToggleComponent } from "../common/components/theme-toggle/theme-toggle";
+import { type Theme, ThemeService } from "../common/services/theme.service";
 import { TranslateService } from "../common/services/translate.service";
 
 @Component({
   selector: "auth-topbar",
-  imports: [TokiSelectComponent],
+  imports: [TokiSelectComponent, ThemeToggleComponent],
   template: `
     <nav class="topbar">
+      <theme-toggle [value]="themeService.theme()" (valueChange)="onThemeChange($event)" />
       <toki-select
         [options]="languages"
         [iconOnly]="true"
@@ -25,12 +28,17 @@ import { TranslateService } from "../common/services/translate.service";
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AuthTopbarComponent {
+  protected readonly themeService = inject(ThemeService);
   protected readonly translate = inject(TranslateService);
 
   readonly languages: SelectOption[] = [
     { value: "en", label: "English" },
     { value: "de", label: "Deutsch" },
   ];
+
+  onThemeChange(theme: string): void {
+    this.themeService.setTheme(theme as Theme);
+  }
 
   onLocaleChange(locale: string): void {
     this.translate.setLocale(locale);

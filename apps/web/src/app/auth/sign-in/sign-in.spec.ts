@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { provideRouter } from "@angular/router";
 import translations from "@tokistack/i18n/locales/en.json";
-import { TRANSLATE_FN } from "@tokistack/ui/i18n";
 import { SignInComponent } from "./sign-in";
 
 function t(key: string): string {
@@ -22,10 +21,7 @@ describe("SignInComponent", () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [SignInComponent],
-      providers: [
-        provideRouter([]),
-        { provide: TRANSLATE_FN, useValue: (key: string) => t(key) },
-      ],
+      providers: [provideRouter([])],
     }).compileComponents();
     fixture = TestBed.createComponent(SignInComponent);
     component = fixture.componentInstance;
