@@ -1,0 +1,11 @@
+{
+  "email.waitlist.subject": "You're on the waitlist!",
+  "email.waitlist.heading": "You're on the waitlist!",
+  "email.waitlist.body": "Thanks for signing up for Tokistack. We'll notify you as soon as your spot is ready.",
+  "email.waitlist.whatsNext": "What's next?",
+  "email.waitlist.nextItem1": "You'll be among the first to try Tokistack when it's ready.",
+  "email.waitlist.nextItem2": "We'll send your invite link as soon as core features are testable.",
+  "email.waitlist.nextItem3": "No fixed timeline — we'd rather ship something solid than rush it.",
+  "email.waitlist.cta": "Visit Tokistack",
+  "email.footer": "Tokistack — You received this email because you signed up for the waitlist."
+}
