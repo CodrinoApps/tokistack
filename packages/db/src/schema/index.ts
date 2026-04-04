@@ -6,3 +6,4 @@ export { tokistackSchema } from "./pg-schema";
 export { session } from "./session";
 export { user } from "./user";
 export { verification } from "./verification";
+export { waitlist, waitlistStatusEnum } from "./waitlist";
