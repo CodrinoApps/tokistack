@@ -57,9 +57,9 @@ resource "cloudflare_ruleset" "rate_limiting" {
 
   rules = [
     {
-      ref         = "rate_limit_auth"
-      description = "Strict rate limit on auth endpoints"
-      expression  = "(starts_with(http.request.uri.path, \"/api/auth/\"))"
+      ref         = "rate_limit_sensitive_endpoints"
+      description = "Strict rate limit on auth and waitlist endpoints"
+      expression  = "(starts_with(http.request.uri.path, \"/api/auth/\") or starts_with(http.request.uri.path, \"/api/waitlist/\"))"
       action      = "block"
       enabled     = true
       ratelimit = {

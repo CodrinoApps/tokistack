@@ -12,3 +12,8 @@ output "frontend_url" {
   description = "Public URL for the frontend."
   value       = "https://${local.fqdn}"
 }
+
+output "turnstile_site_key" {
+  description = "Turnstile site key for frontend embedding."
+  value       = cloudflare_turnstile_widget.waitlist.sitekey
+}
