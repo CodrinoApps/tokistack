@@ -180,6 +180,35 @@ describe("ApiStack", () => {
     });
   });
 
+  test("API Lambda has the Parameters and Secrets extension layer", () => {
+    template.hasResourceProperties("AWS::Lambda::Function", {
+      FunctionName: "tokistack-testing-api",
+      Layers: [
+        Match.stringLikeRegexp("arn:aws:lambda:.+:layer:AWS-Parameters-and-Secrets-Lambda-Extension-Arm64"),
+      ],
+    });
+  });
+
+  test("API Lambda is granted read access to SSM parameters under /tokistack/*", () => {
+    template.hasResourceProperties("AWS::IAM::Policy", {
+      PolicyDocument: {
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Effect: "Allow",
+            Action: "ssm:GetParameter*",
+            Resource: Match.objectLike({
+              "Fn::Join": Match.arrayWith([
+                Match.arrayWith([
+                  Match.stringLikeRegexp(":parameter/tokistack/\\*"),
+                ]),
+              ]),
+            }),
+          }),
+        ]),
+      },
+    });
+  });
+
   test("Lambda is granted read access to the artifacts bucket", () => {
     template.hasResourceProperties("AWS::IAM::Policy", {
       PolicyDocument: {

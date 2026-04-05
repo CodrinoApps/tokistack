@@ -73,6 +73,15 @@ resource "cloudflare_workers_script" "proxy" {
   ]
 }
 
+# --- Turnstile ---
+
+resource "cloudflare_turnstile_widget" "waitlist" {
+  account_id = var.cloudflare_account_id
+  name       = "tokistack-${var.cluster}-waitlist"
+  mode       = "managed"
+  domains    = [local.fqdn]
+}
+
 resource "cloudflare_workers_custom_domain" "proxy" {
   account_id = var.cloudflare_account_id
   hostname   = local.fqdn

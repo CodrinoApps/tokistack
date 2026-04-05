@@ -1,6 +1,7 @@
 import { HttpApi, HttpStage } from "aws-cdk-lib/aws-apigatewayv2";
 import { HttpLambdaAuthorizer, HttpLambdaResponseType } from "aws-cdk-lib/aws-apigatewayv2-authorizers";
 import { HttpLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
+import * as iam from "aws-cdk-lib/aws-iam";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as logs from "aws-cdk-lib/aws-logs";
 import * as s3 from "aws-cdk-lib/aws-s3";
@@ -32,6 +33,10 @@ export class ApiStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
+    const paramsAndSecrets = lambda.ParamsAndSecretsLayerVersion.fromVersion(
+      lambda.ParamsAndSecretsVersions.V1_0_103,
+    );
+
     const apiFunction = new lambda.Function(this, "ApiFunction", {
       functionName: `tokistack-${props.clusterName}-api`,
       runtime: lambda.Runtime.NODEJS_24_X,
@@ -44,7 +49,20 @@ export class ApiStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(15),
       memorySize: 512,
       logGroup,
+      paramsAndSecrets,
     });
+
+    apiFunction.addToRolePolicy(
+      new iam.PolicyStatement({
+        actions: ["ssm:GetParameter*"],
+        resources: [
+          cdk.Arn.format(
+            { service: "ssm", resource: "parameter", resourceName: "tokistack/*" },
+            this,
+          ),
+        ],
+      }),
+    );
 
     artifactsBucket.grantRead(apiFunction);
 

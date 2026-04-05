@@ -7,6 +7,8 @@ on:
         required: true
       CLOUDFLARE_ACCOUNT_ID:
         required: true
+      TURNSTILE_SITE_KEY:
+        required: true
     inputs:
       cluster:
         required: true
@@ -46,6 +48,11 @@ jobs:
       - uses: ./.github/actions/setup-node-pnpm
         with:
           node-version: ${{ vars.NODE_VERSION }}
+
+      - name: Inject Turnstile site key
+        run: >-
+          sed -i "s/turnstileSiteKey: \"\"/turnstileSiteKey: \"${{ secrets.TURNSTILE_SITE_KEY }}\"/"
+          apps/web/src/environments/environment.production.ts
 
       - name: Build frontend
         run: pnpm turbo build --filter=@tokistack/web
