@@ -64,5 +64,13 @@ describe("SignInComponent", () => {
       expect(el.textContent).not.toContain(t("auth.signIn.validation.emailRequired"));
       expect(el.textContent).not.toContain(t("auth.signIn.validation.passwordRequired"));
     });
+
+    it("should render translated text, not raw translation keys", () => {
+      setInputValue(el.querySelector("input[type=\"email\"]")!, "");
+      fixture.detectChanges();
+
+      const errorEl = el.querySelector(".input__error")!;
+      expect(errorEl.textContent).not.toMatch(/^[\w]+\.[\w.]+$/);
+    });
   });
 });
