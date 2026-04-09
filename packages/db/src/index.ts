@@ -1,17 +1,18 @@
-import { closeConnection, localDb } from "./clients/pg";
-import { serverlessDb } from "./clients/serverless-pg";
-import { USE_LOCAL_CLIENT } from "./config";
+import type { PgQueryResultHKT } from "drizzle-orm/pg-core";
+import type { PgAsyncDatabase } from "drizzle-orm/pg-core/async";
+import { createServerlessClient } from "./clients/serverless-pg";
+import type { relations } from "./schema/relations";
 
 export * from "./schema";
 
-/**
- * Gets the necessary database client depending on where this package is used.
- * Neon serverless driver communicates over http which can not be used for local
- * and integration test setups.
- */
-function getDbClient() {
-  return USE_LOCAL_CLIENT ? localDb : serverlessDb;
-}
+export type DbClient = PgAsyncDatabase<PgQueryResultHKT, Record<string, never>, typeof relations>;
 
-export const db = getDbClient();
-export { closeConnection };
+/**
+ * Returns the instantiated DB object for the provided connection string. In Lambda environments
+ * the connection string is parsed from a secure string SSM parameter via the layer extension first
+ * @param connectionString
+ * @returns
+ */
+export function createDb(connectionString: string): DbClient {
+  return createServerlessClient(connectionString).db;
+}

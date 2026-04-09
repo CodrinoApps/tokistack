@@ -19,6 +19,10 @@
     "./schemas/*": {
       "types": "./src/schema/*.ts",
       "default": "./dist/schema/*.js"
+    },
+    "./clients/pg": {
+      "types": "./src/clients/pg.ts",
+      "default": "./dist/clients/pg.js"
     }
   },
   "dependencies": {

@@ -105,6 +105,11 @@ export class ApiStack extends cdk.Stack {
     });
 
     httpApi.addRoutes({
+      path: "/api/waitlist/{proxy+}",
+      integration: apiIntegration,
+    });
+
+    httpApi.addRoutes({
       path: "/{proxy+}",
       authorizer,
       integration: apiIntegration,

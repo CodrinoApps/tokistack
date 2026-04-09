@@ -14,6 +14,7 @@ export default {
         method: request.method,
         headers,
         body: request.body,
+        redirect: "manual",
       });
     }
 

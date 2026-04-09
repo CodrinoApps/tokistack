@@ -1,3 +1,3 @@
-import type { APIGatewayProxyResultV2 } from "aws-lambda";
+import type { APIGatewayProxyStructuredResultV2 } from "aws-lambda";
 
-export type ApiResponse = APIGatewayProxyResultV2;
+export type ApiResponse = APIGatewayProxyStructuredResultV2;

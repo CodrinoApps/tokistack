@@ -4,5 +4,5 @@ module.exports = {
   clearMocks: true,
   testEnvironment: 'node',
   globalSetup: '@tokistack/test-utils/globalSetup',
-  setupFilesAfterEnv: ['@tokistack/test-utils/setup'],
+  setupFilesAfterEnv: ['@tokistack/test-utils/setup', '<rootDir>/test/setup.ts'],
 };

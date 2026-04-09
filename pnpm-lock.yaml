@@ -56,6 +56,9 @@ importers:
       '@tokistack/logger':
         specifier: workspace:*
         version: link:../../packages/logger
+      zod:
+        specifier: 4.3.6
+        version: 4.3.6
     devDependencies:
       '@tokistack/test-utils':
         specifier: workspace:*

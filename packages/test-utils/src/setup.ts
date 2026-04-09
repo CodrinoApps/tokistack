@@ -1,5 +1,9 @@
-import { closeConnection, db } from "@tokistack/db";
+import { createLocalClient } from "@tokistack/db/clients/pg";
 import { sql } from "drizzle-orm";
+
+const { db, close } = createLocalClient(process.env.DATABASE_URL!);
+
+export { db as testDb };
 
 /**
  * Truncates all tables in the tokistack schema.
@@ -17,6 +21,10 @@ export default async function truncateAllTables() {
   }
 }
 
+beforeEach(async () => {
+  await truncateAllTables();
+});
+
 afterAll(async () => {
-  await closeConnection();
+  await close();
 });

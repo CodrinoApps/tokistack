@@ -1,3 +1,3 @@
 export { createApiEvent } from "./api-event";
 export { default as runMigrations } from "./globalSetup";
-export { default as truncateAllTables } from "./setup";
+export { default as truncateAllTables, testDb } from "./setup";
