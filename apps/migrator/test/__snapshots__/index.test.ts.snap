@@ -2,16 +2,20 @@
 
 exports[`Migrations should apply all migrations to provided DB 1`] = `
 {
+  "applied_at": Any<String>,
   "created_at": Any<String>,
   "hash": "61c34ffda0ed6606ba5c3d2350d193f2318816fd5243324d7ce9bb46a61cab30",
   "id": 1,
+  "name": "20260211212031_init_db",
 }
 `;
 
 exports[`Migrations should apply all migrations to provided DB 2`] = `
 {
+  "applied_at": Any<String>,
   "created_at": Any<String>,
   "hash": "ac6ab92382cc7dc8d8c758fff7d5f3d4c6dbcc5e4fbcc06f8b0cf7a2b041b819",
   "id": 2,
+  "name": "20260404181055_add_waitlist_table",
 }
 `;

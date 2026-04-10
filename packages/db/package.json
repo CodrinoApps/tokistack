@@ -19,11 +19,15 @@
     "./schemas/*": {
       "types": "./src/schema/*.ts",
       "default": "./dist/schema/*.js"
+    },
+    "./clients/pg": {
+      "types": "./src/clients/pg.ts",
+      "default": "./dist/clients/pg.js"
     }
   },
   "dependencies": {
     "@neondatabase/serverless": "1.0.2",
-    "drizzle-orm": "1.0.0-beta.15-859cf75",
+    "drizzle-orm": "1.0.0-beta.20",
     "postgres": "3.4.8"
   },
   "devDependencies": {

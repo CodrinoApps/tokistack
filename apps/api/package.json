@@ -12,7 +12,8 @@
   "dependencies": {
     "@tokistack/auth": "workspace:*",
     "@tokistack/db": "workspace:*",
-    "@tokistack/logger": "workspace:*"
+    "@tokistack/logger": "workspace:*",
+    "zod": "4.3.6"
   },
   "devDependencies": {
     "@tokistack/test-utils": "workspace:*",
