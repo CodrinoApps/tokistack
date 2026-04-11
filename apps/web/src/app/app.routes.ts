@@ -10,6 +10,13 @@ export const routes: Routes = [
     ],
   },
   {
+    path: "waitlist",
+    loadComponent: () => import("./layout/auth-layout").then(m => m.AuthLayoutComponent),
+    children: [
+      { path: "", loadComponent: () => import("./waitlist/waitlist").then(m => m.WaitlistComponent) },
+    ],
+  },
+  {
     path: "",
     loadComponent: () => import("./layout/app-layout").then(m => m.AppLayoutComponent),
     canActivate: [authGuard],

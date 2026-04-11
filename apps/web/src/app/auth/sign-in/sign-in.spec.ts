@@ -1,17 +1,7 @@
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { provideRouter } from "@angular/router";
-import translations from "@tokistack/i18n/locales/en.json";
+import { setInputValue, t } from "../../../testing/helpers";
 import { SignInComponent } from "./sign-in";
-
-function t(key: string): string {
-  return (translations as Record<string, string>)[key];
-}
-
-function setInputValue(input: HTMLInputElement, value: string): void {
-  input.value = value;
-  input.dispatchEvent(new Event("input", { bubbles: true }));
-  input.dispatchEvent(new Event("blur", { bubbles: true }));
-}
 
 describe("SignInComponent", () => {
   let component: SignInComponent;

@@ -63,17 +63,13 @@
     </button>
   </form>
 
-  <p class="notice">
-    {{ translate.t('auth.signIn.notice') }}
-  </p>
-
   <div class="divider">
     <span>{{ translate.t('auth.signIn.or') }}</span>
   </div>
 
   <div class="signup-prompt">
     <span>{{ translate.t('auth.signIn.noAccount') }}</span>
-    <a toki-button variant="ghost" routerLink="/auth/sign-up" disabled
-    >{{ translate.t('auth.signIn.signUp') }}</a>
+    <a toki-button variant="ghost" routerLink="/waitlist"
+    >{{ translate.t('auth.signIn.joinWaitlist') }}</a>
   </div>
 </div>
