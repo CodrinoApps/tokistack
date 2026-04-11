@@ -53,6 +53,9 @@ importers:
       '@tokistack/db':
         specifier: workspace:*
         version: link:../../packages/db
+      '@tokistack/email':
+        specifier: workspace:*
+        version: link:../../packages/email
       '@tokistack/logger':
         specifier: workspace:*
         version: link:../../packages/logger

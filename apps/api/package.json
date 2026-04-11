@@ -4,13 +4,14 @@
   "description": "Tokistack API",
   "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.build.json --noEmit && esbuild src/index.ts --bundle --platform=node --target=node24 --outfile=dist/index.js --sourcemap",
+    "build": "tsc -p tsconfig.build.json --noEmit && esbuild src/index.ts --bundle --platform=node --target=node24 --outfile=dist/index.js --sourcemap --external:uglify-js",
     "dev": "tsc --watch",
     "test": "dotenv -e .env.test jest -- --runInBand"
   },
   "license": "UNLICENSED",
   "dependencies": {
     "@tokistack/auth": "workspace:*",
+    "@tokistack/email": "workspace:*",
     "@tokistack/db": "workspace:*",
     "@tokistack/logger": "workspace:*",
     "zod": "4.3.6"

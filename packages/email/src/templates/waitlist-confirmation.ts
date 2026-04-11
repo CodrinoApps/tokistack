@@ -1,6 +1,6 @@
 import mjml2html from "mjml";
-import { type Locale, t } from "../i18n.js";
-import { theme } from "../theme.js";
+import { type Locale, t } from "../i18n";
+import { theme } from "../theme";
 
 type WaitlistConfirmationProps = {
   locale: Locale;

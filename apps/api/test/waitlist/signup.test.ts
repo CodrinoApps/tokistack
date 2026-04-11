@@ -1,10 +1,12 @@
 import { waitlist } from "@tokistack/db/schema";
 import { createApiEvent, testDb } from "@tokistack/test-utils";
 import { HttpStatusCode } from "../../src/common/http/status.constant";
+import * as emailService from "../../src/common/services/email.service";
 import * as turnstileService from "../../src/common/services/turnstile.service";
 import { handler } from "../../src/index";
 
 let mockVerifyTurnstile: jest.SpyInstance;
+let mockSendWaitlistConfirmation: jest.SpyInstance;
 
 function createSignupEvent(body?: Record<string, unknown>) {
   return createApiEvent("POST", "/api/waitlist/signup", {
@@ -21,6 +23,7 @@ const validBody = {
 describe("POST /api/waitlist/signup", () => {
   beforeEach(() => {
     mockVerifyTurnstile = jest.spyOn(turnstileService, "verifyTurnstileToken").mockResolvedValue(true);
+    mockSendWaitlistConfirmation = jest.spyOn(emailService, "sendWaitlistConfirmation").mockResolvedValue(undefined);
   });
 
   it("inserts email with pending status on valid request", async () => {
@@ -37,6 +40,13 @@ describe("POST /api/waitlist/signup", () => {
     });
   });
 
+  it("sends confirmation email on successful signup", async () => {
+    await handler(createSignupEvent(validBody));
+
+    expect(mockSendWaitlistConfirmation).toHaveBeenCalledTimes(1);
+    expect(mockSendWaitlistConfirmation).toHaveBeenCalledWith("test@example.com", "en");
+  });
+
   it("is idempotent for duplicate emails", async () => {
     await handler(createSignupEvent(validBody));
     const response = await handler(createSignupEvent(validBody));
@@ -45,6 +55,14 @@ describe("POST /api/waitlist/signup", () => {
 
     const rows = await testDb.select().from(waitlist);
     expect(rows).toHaveLength(1);
+  });
+
+  it("does not send confirmation email for duplicate signup", async () => {
+    await handler(createSignupEvent(validBody));
+    mockSendWaitlistConfirmation.mockClear();
+    await handler(createSignupEvent(validBody));
+
+    expect(mockSendWaitlistConfirmation).not.toHaveBeenCalled();
   });
 
   it("normalizes email to lowercase", async () => {

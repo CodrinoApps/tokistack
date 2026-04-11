@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Email package for Tokistack",
   "private": true,
-  "type": "module",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
@@ -13,8 +12,15 @@
   },
   "exports": {
     ".": {
-      "types": "./src/send.ts",
-      "default": "./dist/send.js"
+      "types": "./src/client.ts",
+      "default": "./dist/client.js"
+    },
+    "./types": {
+      "types": "./src/types.ts"
+    },
+    "./commands/send-waitlist-confirmation": {
+      "types": "./src/commands/send-waitlist-confirmation.command.ts",
+      "default": "./dist/commands/send-waitlist-confirmation.command.js"
     }
   },
   "dependencies": {

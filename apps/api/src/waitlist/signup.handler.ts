@@ -2,6 +2,7 @@ import { waitlist } from "@tokistack/db/schema";
 import { z } from "zod";
 import { BadRequestError, ForbiddenError } from "../common/errors/api-error";
 import { HttpStatusCode } from "../common/http/status.constant";
+import { sendWaitlistConfirmation } from "../common/services/email.service";
 import { verifyTurnstileToken } from "../common/services/turnstile.service";
 import type { AppContext } from "../common/types/context.type";
 import type { PublicApiEvent } from "../common/types/event.type";
@@ -42,10 +43,15 @@ export async function signupHandler(event: PublicApiEvent, ctx: AppContext): Pro
     throw new ForbiddenError("Turnstile verification failed");
   }
 
-  await ctx.db
+  const inserted = await ctx.db
     .insert(waitlist)
     .values({ email, language, status: "pending" })
-    .onConflictDoNothing({ target: waitlist.email });
+    .onConflictDoNothing({ target: waitlist.email })
+    .returning({ email: waitlist.email });
+
+  if (inserted.length > 0) {
+    await sendWaitlistConfirmation(email, language);
+  }
 
   return {
     statusCode: HttpStatusCode.CREATED,
