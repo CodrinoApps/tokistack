@@ -1,3 +1,4 @@
+import { provideHttpClient } from "@angular/common/http";
 import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from "@angular/core";
 import { provideRouter, withComponentInputBinding } from "@angular/router";
 import { provideDispatcher } from "@ngrx/signals/events";
@@ -12,6 +13,7 @@ import { TranslateService } from "./common/services/translate.service";
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
+    provideHttpClient(),
     provideRouter(routes, withComponentInputBinding()),
     provideStoreDevtools({ maxAge: 25, logOnly: environment.production }),
     provideDispatcher(),

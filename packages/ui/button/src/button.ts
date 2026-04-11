@@ -70,12 +70,13 @@ export class ButtonComponent {
   readonly iconOnly = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
+  readonly type = input<"button" | "submit" | "reset">("button");
 
   /** Only set `disabled` attr on native `<button>` elements — anchors don't support it. */
   protected readonly _disabledAttr = computed(() =>
     this._isButton && (this.disabled() || this.loading()) ? true : null
   );
 
-  /** Default `<button>` to `type="button"` to prevent accidental form submissions. */
-  protected readonly _typeAttr = computed(() => this._isButton ? "button" : null);
+  /** Bind the type attribute only on native `<button>` elements — anchors don't support it. */
+  protected readonly _typeAttr = computed(() => this._isButton ? this.type() : null);
 }

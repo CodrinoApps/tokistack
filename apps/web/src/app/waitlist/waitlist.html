@@ -1,0 +1,77 @@
+<div class="card">
+  @if (result() === "success") {
+  <div class="success">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="48"
+      height="48"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="success-icon"
+    >
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+      <path d="m9 11 3 3L22 4" />
+    </svg>
+    <h1 class="title">{{ translate.t("waitlist.success.title") }}</h1>
+    <p class="subtitle">{{ translate.t("waitlist.success.subtitle") }}</p>
+  </div>
+  } @else {
+  <h1 class="title">{{ translate.t("waitlist.title") }}</h1>
+  <p class="subtitle">{{ translate.t("waitlist.subtitle") }}</p>
+
+  <form (submit)="onSubmit($event)">
+    <toki-input
+      [label]="translate.t('waitlist.emailLabel')"
+      type="email"
+      [placeholder]="translate.t('waitlist.emailPlaceholder')"
+      autocomplete="email"
+      [formField]="waitlistForm.email"
+    >
+      <svg
+        tokiPrefix
+        xmlns="http://www.w3.org/2000/svg"
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <rect width="20" height="16" x="2" y="4" rx="2" />
+        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+      </svg>
+    </toki-input>
+
+    @if (result() === "error") {
+    <p class="error-banner" role="alert">{{ errorMessage() }}</p>
+    }
+
+    <div
+      class="turnstile-container"
+      appTurnstile
+      [sitekey]="sitekey"
+      (token)="turnstileToken.set($event)"
+      (expired)="turnstileToken.set('')"
+      (widgetError)="turnstileToken.set('')"
+    >
+    </div>
+
+    <button
+      toki-button
+      type="submit"
+      variant="primary"
+      [disabled]="waitlistForm.email().invalid() || !turnstileToken()"
+      [loading]="submitting()"
+      style="width: 100%"
+    >
+      {{ translate.t("waitlist.submit") }}
+    </button>
+  </form>
+  }
+</div>
