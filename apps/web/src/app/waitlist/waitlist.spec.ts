@@ -2,8 +2,9 @@ import { Directive, input, output } from "@angular/core";
 import { ComponentFixture, TestBed } from "@angular/core/testing";
 import { FormField } from "@angular/forms/signals";
 import { ButtonComponent } from "@tokistack/ui/button";
+import { TokiCheckboxComponent } from "@tokistack/ui/checkbox";
 import { TokiInputComponent } from "@tokistack/ui/input";
-import { setInputValue, t } from "../../testing/helpers";
+import { checkCheckbox, setInputValue, t } from "../../testing/helpers";
 import { WaitlistService } from "./services/waitlist.service";
 import { WaitlistComponent } from "./waitlist";
 
@@ -30,7 +31,7 @@ describe("WaitlistComponent", () => {
       providers: [{ provide: WaitlistService, useValue: { signup: mockSignup } }],
     })
       .overrideComponent(WaitlistComponent, {
-        set: { imports: [ButtonComponent, FormField, TokiInputComponent, TurnstileStub] },
+        set: { imports: [ButtonComponent, FormField, TokiCheckboxComponent, TokiInputComponent, TurnstileStub] },
       })
       .compileComponents();
 
@@ -98,8 +99,17 @@ describe("WaitlistComponent", () => {
       expect(mockSignup).not.toHaveBeenCalled();
     });
 
+    it("should not call the service when consent is not checked", async () => {
+      setInputValue(el.querySelector("input[type='email']")!, "test@example.com");
+      component.turnstileToken.set("test-token");
+      // consent remains unchecked
+      await component.onSubmit(new Event("submit"));
+      expect(mockSignup).not.toHaveBeenCalled();
+    });
+
     it("should show an error banner when the turnstile token is missing", async () => {
       setInputValue(el.querySelector("input[type='email']")!, "test@example.com");
+      checkCheckbox(el);
       component.turnstileToken.set("");
       await component.onSubmit(new Event("submit"));
       fixture.detectChanges();
@@ -110,6 +120,7 @@ describe("WaitlistComponent", () => {
   describe("successful submission", () => {
     beforeEach(() => {
       setInputValue(el.querySelector("input[type='email']")!, "test@example.com");
+      checkCheckbox(el);
       component.turnstileToken.set("test-token");
       fixture.detectChanges();
     });
@@ -141,6 +152,7 @@ describe("WaitlistComponent", () => {
     beforeEach(() => {
       mockSignup.mockRejectedValue(new Error("Signup failed"));
       setInputValue(el.querySelector("input[type='email']")!, "test@example.com");
+      checkCheckbox(el);
       component.turnstileToken.set("test-token");
       fixture.detectChanges();
     });

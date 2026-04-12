@@ -25,5 +25,8 @@
   "waitlist.validation.turnstileRequired": "Bitte schließe die Überprüfung ab",
   "waitlist.success.title": "Du bist auf der Liste!",
   "waitlist.success.subtitle": "Wir benachrichtigen dich, wenn Tokistack bereit ist.",
-  "waitlist.error.generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut."
+  "waitlist.error.generic": "Etwas ist schiefgelaufen. Bitte versuche es erneut.",
+  "waitlist.consent.label": "Ich bin damit einverstanden, kontaktiert zu werden, wenn Tokistack startet.",
+  "waitlist.consent.privacyLink": "Datenschutzerklärung",
+  "waitlist.validation.consentRequired": "Bitte stimme zu, kontaktiert zu werden, und bestätige die Datenschutzerklärung, um fortzufahren."
 }

@@ -1,0 +1,190 @@
+@use "../../src/lib/tokens/typography" as type;
+
+// ─── Host ───────────────────────────────────────────────────────────────────
+
+:host {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--space-1-5);
+}
+
+:host(.checkbox--disabled) {
+  opacity: var(--disabled-opacity);
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+// ─── Label wrapper (the clickable row) ──────────────────────────────────────
+
+.checkbox__label-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+// ─── Visually hidden native input ────────────────────────────────────────────
+// Preserves native browser semantics, keyboard interaction, and screen reader access.
+// NOT display:none or visibility:hidden — the input must remain reachable by AT.
+
+.checkbox__native {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// ─── Custom visual box ───────────────────────────────────────────────────────
+
+.checkbox__box {
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: var(--border-width-default) solid var(--border-color-strong);
+  border-radius: 0.25rem;
+  background-color: transparent;
+  transition:
+    background-color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    outline-color var(--duration-fast) var(--ease-out);
+}
+
+// ─── Checkmark SVG ──────────────────────────────────────────────────────────
+
+.checkbox__check {
+  width: 0.75rem;
+  height: 0.625rem;
+  color: var(--color-primary-content);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--duration-fast) var(--ease-spring),
+    transform var(--duration-fast) var(--ease-spring);
+}
+
+// ─── Indeterminate dash ──────────────────────────────────────────────────────
+
+.checkbox__dash {
+  position: absolute;
+  width: 0.5rem;
+  height: 2px;
+  border-radius: 1px;
+  background-color: var(--color-primary-content);
+  opacity: 0;
+  transform: scaleX(0.4);
+  transition:
+    opacity var(--duration-fast) var(--ease-spring),
+    transform var(--duration-fast) var(--ease-spring);
+}
+
+// ─── Hover ───────────────────────────────────────────────────────────────────
+
+.checkbox__label-wrapper:hover .checkbox__box {
+  border-color: var(--color-primary);
+}
+
+// ─── Focus ring ──────────────────────────────────────────────────────────────
+// Shown on the visual box when the hidden native input receives keyboard focus.
+// :has() has global baseline support (2024+). The sibling fallback handles edge cases.
+
+.checkbox__label-wrapper:has(.checkbox__native:focus-visible) .checkbox__box {
+  outline: var(--focus-ring-width) solid var(--focus-ring-color);
+  outline-offset: var(--focus-ring-offset);
+}
+
+// ─── Checked ─────────────────────────────────────────────────────────────────
+
+:host(.checkbox--checked) .checkbox__box {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+:host(.checkbox--checked) .checkbox__check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+// ─── Indeterminate ───────────────────────────────────────────────────────────
+
+:host(.checkbox--indeterminate) .checkbox__box {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+:host(.checkbox--indeterminate) .checkbox__check {
+  opacity: 0;
+  transform: scale(0.6);
+}
+
+:host(.checkbox--indeterminate) .checkbox__dash {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+// ─── Invalid ─────────────────────────────────────────────────────────────────
+
+:host(.checkbox--invalid) .checkbox__box {
+  border-color: var(--color-error);
+}
+
+:host(.checkbox--invalid) .checkbox__label-wrapper:hover .checkbox__box {
+  border-color: var(--color-error);
+}
+
+:host(.checkbox--invalid.checkbox--checked) .checkbox__box,
+:host(.checkbox--invalid.checkbox--indeterminate) .checkbox__box {
+  background-color: var(--color-error);
+  border-color: var(--color-error);
+}
+
+:host(.checkbox--invalid) .checkbox__check {
+  color: var(--color-error-content);
+}
+
+:host(.checkbox--invalid) .checkbox__dash {
+  background-color: var(--color-error-content);
+}
+
+:host(.checkbox--invalid)
+  .checkbox__label-wrapper:has(.checkbox__native:focus-visible)
+  .checkbox__box {
+  outline-color: var(--color-error);
+}
+
+// ─── Label text ─────────────────────────────────────────────────────────────
+
+.checkbox__text {
+  @include type.body-base;
+  color: var(--color-base-content);
+}
+
+.checkbox__required {
+  color: var(--color-error);
+  margin-left: var(--space-0-5);
+}
+
+// ─── Error messages ──────────────────────────────────────────────────────────
+
+.checkbox__errors {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  // Indent to align with the label text, not the box
+  padding-left: calc(1.125rem + var(--space-2));
+}
+
+.checkbox__error {
+  @include type.caption;
+  color: var(--color-error);
+}

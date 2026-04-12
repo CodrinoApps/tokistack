@@ -30,6 +30,10 @@
       "types": "./dist/types/tokistack-ui-select.d.ts",
       "default": "./dist/fesm2022/tokistack-ui-select.mjs"
     },
+    "./checkbox": {
+      "types": "./dist/types/tokistack-ui-checkbox.d.ts",
+      "default": "./dist/fesm2022/tokistack-ui-checkbox.mjs"
+    },
     "./tokens": {
       "sass": "./src/lib/tokens/tokens.scss"
     },

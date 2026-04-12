@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component, inject, signal, viewChild } from "@angular/core";
-import { email, form, FormField, pattern, required } from "@angular/forms/signals";
+import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from "@angular/core";
+import { form, FormField, pattern, required } from "@angular/forms/signals";
 import { ButtonComponent } from "@tokistack/ui/button";
+import { TokiCheckboxComponent } from "@tokistack/ui/checkbox";
 import { TokiInputComponent } from "@tokistack/ui/input";
 import { environment } from "../../environments/environment";
 import { TurnstileDirective } from "../common/directives/turnstile.directive";
@@ -9,7 +10,7 @@ import { WaitlistService } from "./services/waitlist.service";
 
 @Component({
   selector: "app-waitlist",
-  imports: [ButtonComponent, FormField, TokiInputComponent, TurnstileDirective],
+  imports: [ButtonComponent, FormField, TokiCheckboxComponent, TokiInputComponent, TurnstileDirective],
   templateUrl: "./waitlist.html",
   styleUrl: "./waitlist.scss",
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,13 +25,18 @@ export class WaitlistComponent {
   readonly model = signal({ email: "" });
   readonly waitlistForm = form(this.model, (schema) => {
     required(schema.email, { message: "waitlist.validation.emailRequired" });
-    email(schema.email, { message: "waitlist.validation.emailInvalid" });
     pattern(
       schema.email,
       /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/,
       { message: "waitlist.validation.emailInvalid" },
     );
   });
+
+  readonly consent = signal(false);
+  readonly consentTouched = signal(false);
+  readonly showConsentError = computed(() => !this.consent() && this.consentTouched());
+
+  readonly privacyUrl = computed(() => `https://tokistack.com/${this.translate.locale()}/privacy`);
 
   readonly turnstileToken = signal("");
   readonly submitting = signal(false);
@@ -45,7 +51,9 @@ export class WaitlistComponent {
   async onSubmit(event: Event): Promise<void> {
     event.preventDefault();
 
-    if (this.waitlistForm.email().invalid()) return;
+    this.consentTouched.set(true);
+
+    if (this.waitlistForm.email().invalid() || !this.consent()) return;
 
     if (!this.turnstileToken()) {
       this.result.set("error");

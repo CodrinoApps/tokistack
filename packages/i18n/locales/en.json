@@ -25,5 +25,8 @@
   "waitlist.validation.turnstileRequired": "Please complete the verification",
   "waitlist.success.title": "You're on the list!",
   "waitlist.success.subtitle": "We'll notify you when Tokistack is ready.",
-  "waitlist.error.generic": "Something went wrong. Please try again."
+  "waitlist.error.generic": "Something went wrong. Please try again.",
+  "waitlist.consent.label": "I agree to be contacted when my spot for Tokistack is ready.",
+  "waitlist.consent.privacyLink": "Privacy Policy",
+  "waitlist.validation.consentRequired": "Please consent to being contacted and acknowledge the privacy notice to continue."
 }
