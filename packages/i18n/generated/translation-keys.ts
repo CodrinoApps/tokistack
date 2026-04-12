@@ -17,6 +17,8 @@ export type TranslationKey =
   | "layout.themeToggle.dark"
   | "layout.themeToggle.light"
   | "layout.themeToggle.system"
+  | "waitlist.consent.label"
+  | "waitlist.consent.privacyLink"
   | "waitlist.emailLabel"
   | "waitlist.emailPlaceholder"
   | "waitlist.error.generic"
@@ -25,6 +27,7 @@ export type TranslationKey =
   | "waitlist.success.subtitle"
   | "waitlist.success.title"
   | "waitlist.title"
+  | "waitlist.validation.consentRequired"
   | "waitlist.validation.emailInvalid"
   | "waitlist.validation.emailRequired"
   | "waitlist.validation.turnstileRequired";

@@ -48,6 +48,32 @@
       </svg>
     </toki-input>
 
+    <div class="consent-wrapper">
+      <div class="consent-row">
+        <toki-checkbox
+          [(value)]="consent"
+          [(touched)]="consentTouched"
+          [invalid]="showConsentError()"
+          ariaLabelledBy="consent-label"
+        />
+        <span id="consent-label" class="consent-text">
+          {{ translate.t("waitlist.consent.label") }}
+          <a
+            [href]="privacyUrl()"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="consent-link"
+          >
+            {{ translate.t("waitlist.consent.privacyLink") }}
+          </a>
+        </span>
+      </div>
+      @if (showConsentError()) {
+      <span class="consent-error" role="alert"
+      >{{ translate.t("waitlist.validation.consentRequired") }}</span>
+      }
+    </div>
+
     @if (result() === "error") {
     <p class="error-banner" role="alert">{{ errorMessage() }}</p>
     }
@@ -66,7 +92,7 @@
       toki-button
       type="submit"
       variant="primary"
-      [disabled]="waitlistForm.email().invalid() || !turnstileToken()"
+      [disabled]="waitlistForm.email().invalid() || !consent() || !turnstileToken()"
       [loading]="submitting()"
       style="width: 100%"
     >
