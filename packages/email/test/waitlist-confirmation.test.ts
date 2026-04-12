@@ -1,13 +1,20 @@
 import de from "@tokistack/i18n/locales/email/de.json";
 import en from "@tokistack/i18n/locales/email/en.json";
 import { describe, expect, it } from "vitest";
-import { waitlistConfirmation } from "../src/templates/waitlist-confirmation";
+import { waitlistConfirmationHtml } from "../src/generated/waitlist-confirmation";
 
-describe("waitlistConfirmation", () => {
-  it("renders valid HTML with all English translations", () => {
-    const { html, subject } = waitlistConfirmation({ locale: "en" });
+describe("waitlistConfirmationHtml", () => {
+  it("matches the English snapshot", () => {
+    expect(waitlistConfirmationHtml.en).toMatchSnapshot();
+  });
 
-    expect(subject).toBe(en["email.waitlist.subject"]);
+  it("matches the German snapshot", () => {
+    expect(waitlistConfirmationHtml.de).toMatchSnapshot();
+  });
+
+  it("contains all English translations", () => {
+    const html = waitlistConfirmationHtml.en;
+
     expect(html).toContain(en["email.waitlist.heading"]);
     expect(html).toContain(en["email.waitlist.body"]);
     expect(html).toContain(en["email.waitlist.whatsNext"]);
@@ -18,10 +25,9 @@ describe("waitlistConfirmation", () => {
     expect(html).toContain(en["email.footer"]);
   });
 
-  it("renders valid HTML with all German translations", () => {
-    const { html, subject } = waitlistConfirmation({ locale: "de" });
+  it("contains all German translations", () => {
+    const html = waitlistConfirmationHtml.de;
 
-    expect(subject).toBe(de["email.waitlist.subject"]);
     expect(html).toContain(de["email.waitlist.heading"]);
     expect(html).toContain(de["email.waitlist.body"]);
     expect(html).toContain(de["email.waitlist.whatsNext"]);
@@ -33,7 +39,7 @@ describe("waitlistConfirmation", () => {
   });
 
   it("applies theme colors", () => {
-    const { html } = waitlistConfirmation({ locale: "en" });
+    const html = waitlistConfirmationHtml.en;
 
     expect(html).toContain("#0069ff");
     expect(html).toContain("#394e6a");
@@ -41,15 +47,11 @@ describe("waitlistConfirmation", () => {
   });
 
   it("does not contain unresolved translation keys", () => {
-    const { html } = waitlistConfirmation({ locale: "en" });
-
-    expect(html).not.toMatch(/email\.\w+\.\w+/);
+    expect(waitlistConfirmationHtml.en).not.toMatch(/email\.\w+\.\w+/);
+    expect(waitlistConfirmationHtml.de).not.toMatch(/email\.\w+\.\w+/);
   });
 
   it("locale files have matching keys", () => {
-    const enKeys = Object.keys(en).sort();
-    const deKeys = Object.keys(de).sort();
-
-    expect(enKeys).toEqual(deKeys);
+    expect(Object.keys(en).sort()).toEqual(Object.keys(de).sort());
   });
 });

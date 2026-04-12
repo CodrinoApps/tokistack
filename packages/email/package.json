@@ -4,11 +4,11 @@
   "description": "Email package for Tokistack",
   "private": true,
   "scripts": {
-    "build": "tsc",
+    "build": "tsx scripts/prerender-templates.ts && tsc",
     "dev": "tsc --watch",
-    "preview": "tsc && node --experimental-strip-types --no-warnings scripts/preview.ts",
-    "test": "vitest",
-    "test:ci": "vitest run"
+    "preview": "tsx scripts/preview.ts",
+    "test": "tsx scripts/prerender-templates.ts && vitest",
+    "test:ci": "tsx scripts/prerender-templates.ts && vitest run"
   },
   "exports": {
     ".": {
@@ -26,13 +26,14 @@
   "dependencies": {
     "@tokistack/i18n": "workspace:*",
     "@tokistack/logger": "workspace:*",
-    "mjml": "4.18.0",
     "resend": "6.10.0"
   },
   "devDependencies": {
     "@tokistack/typescript-config": "workspace:*",
     "@types/mjml": "4.7.4",
     "@types/node": "25.2.2",
+    "mjml": "4.18.0",
+    "tsx": "4.21.0",
     "typescript": "5.9.3",
     "vitest": "4.1.2"
   }

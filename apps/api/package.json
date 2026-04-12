@@ -4,7 +4,7 @@
   "description": "Tokistack API",
   "private": true,
   "scripts": {
-    "build": "tsc -p tsconfig.build.json --noEmit && esbuild src/index.ts --bundle --platform=node --target=node24 --outfile=dist/index.js --sourcemap --external:uglify-js",
+    "build": "tsc -p tsconfig.build.json --noEmit && esbuild src/index.ts --bundle --platform=node --target=node24 --outfile=dist/index.js --sourcemap ",
     "dev": "tsc --watch",
     "test": "dotenv -e .env.test jest -- --runInBand"
   },
