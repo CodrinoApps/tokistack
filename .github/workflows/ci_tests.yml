@@ -87,6 +87,9 @@ jobs:
         with:
           node-version: ${{ vars.NODE_VERSION }}
 
+      - name: Build dependencies
+        run: pnpm turbo build --filter=@tokistack/email^...
+
       - name: Run email tests
         run: pnpm --filter @tokistack/email test:ci
 
