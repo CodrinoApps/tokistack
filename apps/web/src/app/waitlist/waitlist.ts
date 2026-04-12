@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal, viewChild } from "@angular/core";
-import { email, form, FormField, pattern, required } from "@angular/forms/signals";
+import { form, FormField, pattern, required } from "@angular/forms/signals";
 import { ButtonComponent } from "@tokistack/ui/button";
 import { TokiCheckboxComponent } from "@tokistack/ui/checkbox";
 import { TokiInputComponent } from "@tokistack/ui/input";
@@ -25,7 +25,6 @@ export class WaitlistComponent {
   readonly model = signal({ email: "" });
   readonly waitlistForm = form(this.model, (schema) => {
     required(schema.email, { message: "waitlist.validation.emailRequired" });
-    email(schema.email, { message: "waitlist.validation.emailInvalid" });
     pattern(
       schema.email,
       /^(?!\.)(?!.*\.\.)([A-Za-z0-9_'+\-.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9-]*\.)+[A-Za-z]{2,}$/,
