@@ -40,6 +40,9 @@ resource "cloudflare_bot_management" "default" {
   zone_id    = cloudflare_zone.main.id
   fight_mode = true
   enable_js  = true
+  ai_bots_protection = "block"
+  crawler_protection = "enabled"
+  is_robots_txt_managed = true
 }
 
 resource "cloudflare_leaked_credential_check" "default" {
