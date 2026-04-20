@@ -99,8 +99,8 @@ describe("ApiStack", () => {
     template = makeApiStack();
   });
 
-  test("exactly two Lambda functions are created", () => {
-    template.resourceCountIs("AWS::Lambda::Function", 2);
+  test("exactly three Lambda functions are created", () => {
+    template.resourceCountIs("AWS::Lambda::Function", 3);
   });
 
   test("Lambda function name follows tokistack-{cluster}-api convention", () => {
@@ -112,6 +112,12 @@ describe("ApiStack", () => {
   test("Authorizer function name follows tokistack-{cluster}-authorizer convention", () => {
     template.hasResourceProperties("AWS::Lambda::Function", {
       FunctionName: "tokistack-testing-authorizer",
+    });
+  });
+
+  test("Auth function name follows tokistack-{cluster}-auth convention", () => {
+    template.hasResourceProperties("AWS::Lambda::Function", {
+      FunctionName: "tokistack-testing-auth",
     });
   });
 
@@ -132,6 +138,13 @@ describe("ApiStack", () => {
   test("Authorizer Lambda log group has 30-day retention", () => {
     template.hasResourceProperties("AWS::Logs::LogGroup", {
       LogGroupName: "/aws/lambda/tokistack-testing-authorizer",
+      RetentionInDays: 30,
+    });
+  });
+
+  test("Auth Lambda log group has 30-day retention", () => {
+    template.hasResourceProperties("AWS::Logs::LogGroup", {
+      LogGroupName: "/aws/lambda/tokistack-testing-auth",
       RetentionInDays: 30,
     });
   });
@@ -189,7 +202,45 @@ describe("ApiStack", () => {
     });
   });
 
+  test("Authorizer Lambda has the Parameters and Secrets extension layer", () => {
+    template.hasResourceProperties("AWS::Lambda::Function", {
+      FunctionName: "tokistack-testing-authorizer",
+      Layers: [
+        Match.stringLikeRegexp("arn:aws:lambda:.+:layer:AWS-Parameters-and-Secrets-Lambda-Extension-Arm64"),
+      ],
+    });
+  });
+
+  test("Auth Lambda has the Parameters and Secrets extension layer", () => {
+    template.hasResourceProperties("AWS::Lambda::Function", {
+      FunctionName: "tokistack-testing-auth",
+      Layers: [
+        Match.stringLikeRegexp("arn:aws:lambda:.+:layer:AWS-Parameters-and-Secrets-Lambda-Extension-Arm64"),
+      ],
+    });
+  });
+
   test("API Lambda is granted read access to SSM parameters under /tokistack/*", () => {
+    template.hasResourceProperties("AWS::IAM::Policy", {
+      PolicyDocument: {
+        Statement: Match.arrayWith([
+          Match.objectLike({
+            Effect: "Allow",
+            Action: "ssm:GetParameter*",
+            Resource: Match.objectLike({
+              "Fn::Join": Match.arrayWith([
+                Match.arrayWith([
+                  Match.stringLikeRegexp(":parameter/tokistack/\\*"),
+                ]),
+              ]),
+            }),
+          }),
+        ]),
+      },
+    });
+  });
+
+  test("Authorizer Lambda is granted read access to SSM parameters under /tokistack/*", () => {
     template.hasResourceProperties("AWS::IAM::Policy", {
       PolicyDocument: {
         Statement: Match.arrayWith([

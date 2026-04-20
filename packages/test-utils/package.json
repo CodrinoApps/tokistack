@@ -8,6 +8,10 @@
       "types": "./src/index.ts",
       "default": "./src/index.ts"
     },
+    "./api-event": {
+      "types": "./src/api-event.ts",
+      "default": "./src/api-event.ts"
+    },
     "./globalSetup": {
       "types": "./src/globalSetup.ts",
       "default": "./src/globalSetup.ts"

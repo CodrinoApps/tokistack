@@ -3,18 +3,19 @@ import type { DbClient } from "@tokistack/db";
 import * as schema from "@tokistack/db/schema";
 import { betterAuth } from "better-auth";
 import { organization } from "better-auth/plugins";
-import { BETTER_AUTH_URL } from "./config";
 
-export function createAuth(db: DbClient) {
+export function createAuth(db: DbClient, options: { secret: string; baseURL: string; disableSignUp: boolean }) {
   return betterAuth({
     appName: "Tokistack",
-    baseURL: BETTER_AUTH_URL,
+    secret: options.secret,
+    baseURL: options.baseURL,
     database: drizzleAdapter(db, {
       provider: "pg",
       schema,
     }),
     emailAndPassword: {
       enabled: true,
+      disableSignUp: options.disableSignUp,
     },
     plugins: [
       organization(),
