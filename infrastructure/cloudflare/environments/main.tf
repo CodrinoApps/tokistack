@@ -82,6 +82,61 @@ resource "cloudflare_turnstile_widget" "waitlist" {
   domains    = [local.fqdn]
 }
 
+# --- Zero Trust Access (testing-env only) ---
+
+resource "cloudflare_zero_trust_access_policy" "email_otp" {
+  count      = var.cluster != "production" ? 1 : 0
+  account_id = var.cloudflare_account_id
+  name       = "tokistack-${var.cluster}-org-email-otp"
+  decision   = "allow"
+
+  include = [
+    {
+      email_domain = { domain = var.access_email_domain }
+    }
+  ]
+}
+
+resource "cloudflare_zero_trust_access_service_token" "ci" {
+  count      = var.cluster != "production" ? 1 : 0
+  account_id = var.cloudflare_account_id
+  name       = "tokistack-${var.cluster}-ci"
+  duration   = "4380h"
+}
+
+resource "cloudflare_zero_trust_access_policy" "service_token" {
+  count      = var.cluster != "production" ? 1 : 0
+  account_id = var.cloudflare_account_id
+  name       = "tokistack-${var.cluster}-ci-service-token"
+  decision   = "non_identity"
+
+  include = [
+    {
+      service_token = { token_id = cloudflare_zero_trust_access_service_token.ci[0].id }
+    }
+  ]
+}
+
+resource "cloudflare_zero_trust_access_application" "env" {
+  count            = var.cluster != "production" ? 1 : 0
+  account_id       = var.cloudflare_account_id
+  name             = "tokistack-${var.cluster}"
+  domain           = local.fqdn
+  type             = "self_hosted"
+  session_duration = "24h"
+
+  policies = [
+    {
+      id         = cloudflare_zero_trust_access_policy.email_otp[0].id
+      precedence = 1
+    },
+    {
+      id         = cloudflare_zero_trust_access_policy.service_token[0].id
+      precedence = 2
+    }
+  ]
+}
+
 resource "cloudflare_workers_custom_domain" "proxy" {
   account_id = var.cloudflare_account_id
   hostname   = local.fqdn
