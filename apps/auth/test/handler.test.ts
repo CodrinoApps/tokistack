@@ -41,6 +41,58 @@ describe("eventToRequest", () => {
 
     expect(request.body).toBeNull();
   });
+
+  it("merges event.cookies into the Cookie header", () => {
+    const event = createApiEvent("GET", "/api/auth/get-session", {
+      cookies: ["session=abc", "csrf=xyz"],
+    });
+    const request = eventToRequest(event);
+
+    expect(request.headers.get("cookie")).toBe("session=abc; csrf=xyz");
+  });
+
+  it("does not overwrite a Cookie header already present in event.headers", () => {
+    const event = createApiEvent("GET", "/api/auth/get-session", {
+      headers: { cookie: "existing=1" },
+      cookies: ["session=abc"],
+    });
+    const request = eventToRequest(event);
+
+    expect(request.headers.get("cookie")).toBe("existing=1");
+  });
+
+  it("does not set Cookie header when event.cookies is empty", () => {
+    const event = createApiEvent("GET", "/api/auth/get-session", { cookies: [] });
+    const request = eventToRequest(event);
+
+    expect(request.headers.get("cookie")).toBeNull();
+  });
+
+  it("decodes a base64-encoded body", async () => {
+    const original = JSON.stringify({ email: "a@b.com", password: "secret" });
+    const encoded = Buffer.from(original).toString("base64");
+    const event = createApiEvent("POST", "/api/auth/sign-in/email", {
+      body: encoded,
+      isBase64Encoded: true,
+      headers: { "content-type": "application/json" },
+    });
+    const request = eventToRequest(event);
+    const text = await request.text();
+
+    expect(text).toBe(original);
+  });
+
+  it("passes a plain text body through unchanged", async () => {
+    const body = JSON.stringify({ email: "a@b.com" });
+    const event = createApiEvent("POST", "/api/auth/sign-in/email", {
+      body,
+      isBase64Encoded: false,
+      headers: { "content-type": "application/json" },
+    });
+    const request = eventToRequest(event);
+
+    expect(await request.text()).toBe(body);
+  });
 });
 
 describe("responseToResult", () => {
