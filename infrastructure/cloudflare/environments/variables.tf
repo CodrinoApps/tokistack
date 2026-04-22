@@ -28,3 +28,9 @@ variable "origin_header_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "access_email_domain" {
+  description = "Email domain allowed through Cloudflare Access OTP (non-production only)."
+  type        = string
+  default     = ""
+}

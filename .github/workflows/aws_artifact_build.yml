@@ -67,3 +67,16 @@ jobs:
         run: |
           aws s3 cp apps/authorizer/dist/authorizer.zip \
             s3://tokistack-${{ steps.cluster.outputs.name }}-artifacts/${{ inputs.hash_or_version }}/authorizer.zip
+
+      - name: Build Auth Lambda bundle
+        run: pnpm turbo build --filter=@tokistack/auth-handler
+
+      - name: Package Auth Lambda zip
+        run: |
+          cd apps/auth/dist
+          zip -j auth.zip index.js index.js.map
+
+      - name: Upload Auth artifact to S3
+        run: |
+          aws s3 cp apps/auth/dist/auth.zip \
+            s3://tokistack-${{ steps.cluster.outputs.name }}-artifacts/${{ inputs.hash_or_version }}/auth.zip

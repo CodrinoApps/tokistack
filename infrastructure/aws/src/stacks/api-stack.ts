@@ -1,12 +1,11 @@
 import { HttpApi, HttpStage } from "aws-cdk-lib/aws-apigatewayv2";
 import { HttpLambdaAuthorizer, HttpLambdaResponseType } from "aws-cdk-lib/aws-apigatewayv2-authorizers";
 import { HttpLambdaIntegration } from "aws-cdk-lib/aws-apigatewayv2-integrations";
-import * as iam from "aws-cdk-lib/aws-iam";
 import * as lambda from "aws-cdk-lib/aws-lambda";
-import * as logs from "aws-cdk-lib/aws-logs";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as cdk from "aws-cdk-lib/core";
 import { Construct } from "constructs";
+import { TokistackFunction } from "../constructs/tokistack-function";
 
 interface ApiStackProps extends cdk.StackProps {
   clusterName: string;
@@ -27,72 +26,44 @@ export class ApiStack extends cdk.Stack {
       `tokistack-${props.clusterName}-artifacts`,
     );
 
-    const logGroup = new logs.LogGroup(this, "ApiFunctionLogs", {
-      logGroupName: `/aws/lambda/tokistack-${props.clusterName}-api`,
-      retention: logs.RetentionDays.ONE_MONTH,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
-
-    const paramsAndSecrets = lambda.ParamsAndSecretsLayerVersion.fromVersion(
-      lambda.ParamsAndSecretsVersions.V1_0_103,
-    );
-
-    const apiFunction = new lambda.Function(this, "ApiFunction", {
-      functionName: `tokistack-${props.clusterName}-api`,
+    const apiFunction = new TokistackFunction(this, "ApiFunction", {
+      clusterName: props.clusterName,
+      name: "api",
       runtime: lambda.Runtime.NODEJS_24_X,
-      architecture: lambda.Architecture.ARM_64,
-      handler: "index.handler",
-      code: lambda.Code.fromBucket(
-        artifactsBucket,
-        `${hashOrVersion.valueAsString}/api.zip`,
-      ),
-      timeout: cdk.Duration.seconds(15),
       memorySize: 512,
-      logGroup,
-      paramsAndSecrets,
+      timeout: cdk.Duration.seconds(15),
+      artifactsBucket,
+      artifactKey: `${hashOrVersion.valueAsString}/api`,
     });
 
-    apiFunction.addToRolePolicy(
-      new iam.PolicyStatement({
-        actions: ["ssm:GetParameter*"],
-        resources: [
-          cdk.Arn.format(
-            { service: "ssm", resource: "parameter", resourceName: "tokistack/*" },
-            this,
-          ),
-        ],
-      }),
-    );
-
-    artifactsBucket.grantRead(apiFunction);
-
-    const authorizerLogGroup = new logs.LogGroup(this, "AuthorizerFunctionLogs", {
-      logGroupName: `/aws/lambda/tokistack-${props.clusterName}-authorizer`,
-      retention: logs.RetentionDays.ONE_MONTH,
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-    });
-
-    const authorizerFunction = new lambda.Function(this, "AuthorizerFunction", {
-      functionName: `tokistack-${props.clusterName}-authorizer`,
+    const authorizerFunction = new TokistackFunction(this, "AuthorizerFunction", {
+      clusterName: props.clusterName,
+      name: "authorizer",
       runtime: lambda.Runtime.NODEJS_24_X,
-      architecture: lambda.Architecture.ARM_64,
-      handler: "index.handler",
-      code: lambda.Code.fromBucket(
-        artifactsBucket,
-        `${hashOrVersion.valueAsString}/authorizer.zip`,
-      ),
-      timeout: cdk.Duration.seconds(5),
       memorySize: 128,
-      logGroup: authorizerLogGroup,
+      timeout: cdk.Duration.seconds(5),
+      artifactsBucket,
+      artifactKey: `${hashOrVersion.valueAsString}/authorizer`,
     });
 
-    artifactsBucket.grantRead(authorizerFunction);
+    const authFunction = new TokistackFunction(this, "AuthFunction", {
+      clusterName: props.clusterName,
+      name: "auth",
+      runtime: lambda.Runtime.NODEJS_24_X,
+      memorySize: 256,
+      timeout: cdk.Duration.seconds(15),
+      artifactsBucket,
+      artifactKey: `${hashOrVersion.valueAsString}/auth`,
+    });
 
-    const authorizer = new HttpLambdaAuthorizer("Authorizer", authorizerFunction, {
+    authFunction.function.addEnvironment("CLUSTER_NAME", props.clusterName);
+
+    const authorizer = new HttpLambdaAuthorizer("Authorizer", authorizerFunction.function, {
       responseTypes: [HttpLambdaResponseType.SIMPLE],
     });
 
-    const apiIntegration = new HttpLambdaIntegration("ApiIntegration", apiFunction);
+    const apiIntegration = new HttpLambdaIntegration("ApiIntegration", apiFunction.function);
+    const authIntegration = new HttpLambdaIntegration("AuthIntegration", authFunction.function);
 
     const httpApi = new HttpApi(this, "HttpApi", {
       apiName: `tokistack-${props.clusterName}-api`,
@@ -101,7 +72,7 @@ export class ApiStack extends cdk.Stack {
 
     httpApi.addRoutes({
       path: "/api/auth/{proxy+}",
-      integration: apiIntegration,
+      integration: authIntegration,
     });
 
     httpApi.addRoutes({
