@@ -1,7 +1,7 @@
 import { createAuth } from "@tokistack/auth";
 import { createDb, type DbClient } from "@tokistack/db";
 import { logger } from "@tokistack/logger";
-import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from "aws-lambda";
+import type { APIGatewayProxyEventV2, APIGatewayProxyResultV2, APIGatewayProxyStructuredResultV2 } from "aws-lambda";
 import { resolveParameter } from "./common/services/params.service";
 
 let db: DbClient | null = null;
@@ -37,8 +37,14 @@ export function eventToRequest(event: APIGatewayProxyEventV2): Request {
   const qs = event.rawQueryString ? `?${event.rawQueryString}` : "";
   const url = `https://${event.requestContext.domainName}${event.rawPath}${qs}`;
   const headers = new Headers(event.headers as Record<string, string>);
+  if (event.cookies?.length && !headers.has("cookie")) {
+    headers.set("cookie", event.cookies.join("; "));
+  }
   const method = event.requestContext.http.method;
-  const body = method !== "GET" && method !== "HEAD" ? event.body ?? undefined : undefined;
+  let body: Uint8Array | string | undefined;
+  if (method !== "GET" && method !== "HEAD" && event.body) {
+    body = event.isBase64Encoded ? Buffer.from(event.body, "base64") : event.body;
+  }
 
   return new Request(url, { method, headers, body });
 }
@@ -48,7 +54,7 @@ export function eventToRequest(event: APIGatewayProxyEventV2): Request {
  * @param response
  * @returns
  */
-export async function responseToResult(response: Response): Promise<APIGatewayProxyResultV2> {
+export async function responseToResult(response: Response): Promise<APIGatewayProxyStructuredResultV2> {
   const headers: Record<string, string> = {};
   const cookies: string[] = [];
 
