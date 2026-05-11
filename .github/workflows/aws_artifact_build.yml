@@ -26,6 +26,10 @@ jobs:
         with:
           node-version: ${{ vars.NODE_VERSION }}
 
+      - uses: ./.github/actions/setup-rust
+        with:
+          cargo-lambda: "true"
+
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@8df5847569e6427dd6c4fb1cf565c83acfa8afa7 # v6.0.0
         with:
@@ -80,3 +84,11 @@ jobs:
         run: |
           aws s3 cp apps/auth/dist/auth.zip \
             s3://tokistack-${{ steps.cluster.outputs.name }}-artifacts/${{ inputs.hash_or_version }}/auth.zip
+
+      - name: Build Admin Lambda bundle
+        run: cargo lambda build --release -p admin --arm64 --output-format zip
+
+      - name: Upload Admin artifact to S3
+        run: |
+          aws s3 cp target/lambda/admin/bootstrap.zip \
+            s3://tokistack-${{ steps.cluster.outputs.name }}-artifacts/${{ inputs.hash_or_version }}/admin.zip

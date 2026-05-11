@@ -80,6 +80,26 @@ jobs:
       - name: Run tests for ${{ matrix.module }}
         run: ${{ matrix.test_command }}
 
+  run_rust_tests:
+    runs-on: ubuntu-24.04-arm
+    strategy:
+      matrix:
+        include:
+          - workspace: "admin"
+            test_command: cargo test -p admin
+            cargo_lambda: true
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Rust
+        uses: ./.github/actions/setup-rust
+        with:
+          cargo-lambda: ${{ matrix.cargo_lambda }}
+
+      - name: Run tests for ${{ matrix.workspace }}
+        run: ${{ matrix.test_command }}
+
   run_email_tests:
     runs-on: ubuntu-24.04-arm
     steps:
@@ -145,6 +165,7 @@ jobs:
     needs: [
       run_linter,
       run_integration_tests,
+      run_rust_tests,
       run_email_tests,
       run_cdk_tests,
       run_ui_tests,

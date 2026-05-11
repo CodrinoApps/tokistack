@@ -1,0 +1,9 @@
+[package]
+name = "admin"
+version = "1.0.0"
+edition = "2024"
+
+[dependencies]
+lambda_runtime = "1.0.1"
+serde = "1"
+tokio = { version = "1", features = ["macros"] }

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import * as cdk from "aws-cdk-lib/core";
+import { AdminStack } from "./stacks/admin-stack";
 import { ApiStack } from "./stacks/api-stack";
 import { ArtifactsStack } from "./stacks/artifacts-stack";
 
@@ -17,3 +18,4 @@ const env: cdk.Environment = {
 
 new ArtifactsStack(app, "TokistackArtifacts", { env, clusterName });
 new ApiStack(app, "TokistackApi", { env, clusterName });
+new AdminStack(app, "TokistackAdmin", { env, clusterName });

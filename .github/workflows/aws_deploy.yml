@@ -10,6 +10,7 @@ on:
         options:
           - TokistackArtifacts
           - TokistackApi
+          - TokistackAdmin
       cfn_parameters:
         description: "CloudFormation parameter overrides (e.g. --parameters hashOrVersion=abc1234 --parameters bucketName=xyz)"
         required: false

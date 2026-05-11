@@ -37,6 +37,7 @@ jobs:
               - 'apps/api/**'
               - 'apps/authorizer/**'
               - 'apps/auth/**'
+              - 'apps/admin/**'
               - 'infrastructure/aws/**'
 
   deploy_artifacts_stack:
@@ -72,4 +73,17 @@ jobs:
     uses: ./.github/workflows/aws_deploy.yml
     with:
       desired_stack: TokistackApi
+      cfn_parameters: "--parameters hashOrVersion=${{ inputs.hash_or_version }}"
+
+  deploy_admin_stack:
+    needs:
+      - build_artifact
+      - changes
+    if: ${{ needs.changes.outputs.src == 'true' }}
+    secrets:
+      AWS_ROLE_TO_ASSUME: ${{ secrets.AWS_ROLE_TO_ASSUME }}
+      AWS_REGION: ${{ secrets.AWS_REGION }}
+    uses: ./.github/workflows/aws_deploy.yml
+    with:
+      desired_stack: TokistackAdmin
       cfn_parameters: "--parameters hashOrVersion=${{ inputs.hash_or_version }}"
