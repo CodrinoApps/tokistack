@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "better-auth:generate-migration": "pnpx https://pkg.pr.new/better-auth/better-auth/@better-auth/cli@6913 generate --config ./src/auth.ts --output ../db/src/schema/autogen.ts --yes"
+    "better-auth:generate-migration": "pnpx https://pkg.pr.new/better-auth/better-auth/@better-auth/cli@9489 generate --config ./src/auth.ts --output ../db/src/schema/autogen.ts --yes"
   },
   "exports": {
     ".": {
@@ -19,9 +19,9 @@
     }
   },
   "dependencies": {
-    "@better-auth/drizzle-adapter": "https://pkg.pr.new/better-auth/better-auth/@better-auth/drizzle-adapter@9489",
+    "@better-auth/drizzle-adapter": "https://pkg.pr.new/better-auth/better-auth/@better-auth/drizzle-adapter@cca220bd418d6c8c89693b7a6224538714f6f6cf",
     "@tokistack/db": "workspace:*",
-    "better-auth": "https://pkg.pr.new/better-auth/better-auth/better-auth@9489"
+    "better-auth": "https://pkg.pr.new/better-auth/better-auth/better-auth@cca220bd418d6c8c89693b7a6224538714f6f6cf"
   },
   "devDependencies": {
     "@tokistack/typescript-config": "workspace:*",

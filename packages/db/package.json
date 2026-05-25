@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "1.0.2",
-    "drizzle-orm": "1.0.0-beta.20",
+    "drizzle-orm": "v1.0.0-rc.3",
     "postgres": "3.4.8"
   },
   "devDependencies": {
