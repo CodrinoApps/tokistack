@@ -1,28 +1,14 @@
+use admin_core::{AdminCommand, AdminResponse};
 use lambda_runtime::{Error, LambdaEvent};
-use serde::{Deserialize, Serialize};
-
-#[derive(Deserialize)]
-pub(crate) struct IncomingMessage {
-    command: String,
-}
-
-#[derive(Serialize)]
-pub(crate) struct OutgoingMessage {
-    req_id: String,
-    msg: String,
-}
 
 pub(crate) async fn function_handler(
-    event: LambdaEvent<IncomingMessage>,
-) -> Result<OutgoingMessage, Error> {
-    let command = event.payload.command;
-
-    let resp = OutgoingMessage {
-        req_id: event.context.request_id,
-        msg: format!("Command {}.", command),
-    };
-
-    Ok(resp)
+    event: LambdaEvent<AdminCommand>,
+) -> Result<AdminResponse, Error> {
+    match event.payload {
+        AdminCommand::InviteUser { email } => Ok(AdminResponse::Success {
+            message: format!("Invited {}", email),
+        }),
+    }
 }
 
 #[cfg(test)]
@@ -33,12 +19,12 @@ mod tests {
     #[tokio::test]
     async fn test_handler() {
         let event = LambdaEvent::new(
-            IncomingMessage {
-                command: "test".to_string(),
+            AdminCommand::InviteUser {
+                email: "test@example.com".to_string(),
             },
             Context::default(),
         );
         let response = function_handler(event).await.unwrap();
-        assert_eq!(response.msg, "Command test.");
+        assert!(matches!(response, AdminResponse::Success { .. }));
     }
 }

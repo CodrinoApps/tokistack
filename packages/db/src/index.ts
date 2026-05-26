@@ -5,7 +5,7 @@ import type { relations } from "./schema/relations";
 
 export * from "./schema";
 
-export type DbClient = PgAsyncDatabase<PgQueryResultHKT, Record<string, never>, typeof relations>;
+export type DbClient = PgAsyncDatabase<PgQueryResultHKT, typeof relations>;
 
 /**
  * Returns the instantiated DB object for the provided connection string. In Lambda environments

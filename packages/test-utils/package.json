@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@tokistack/db": "workspace:*",
-    "drizzle-orm": "1.0.0-beta.20"
+    "drizzle-orm": "v1.0.0-rc.3"
   },
   "devDependencies": {
     "@tokistack/typescript-config": "workspace:*",
