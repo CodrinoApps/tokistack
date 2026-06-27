@@ -1,0 +1,25 @@
+{
+  "name": "@tokistack/email-renderer",
+  "version": "1.0.0",
+  "description": "Email renderer for Tokistack. Converts MJML templates into HTML for use in email packages",
+  "private": true,
+  "scripts": {
+    "build": "tsx src/prerender-templates.ts && tsc",
+    "dev": "tsc --watch",
+    "preview": "tsx src/preview.ts",
+    "test": "tsx src/prerender-templates.ts && vitest",
+    "test:ci": "tsx src/prerender-templates.ts && vitest run"
+  },
+  "dependencies": {
+    "@tokistack/logger": "workspace:*"
+  },
+  "devDependencies": {
+    "@tokistack/typescript-config": "workspace:*",
+    "@types/mjml": "4.7.4",
+    "@types/node": "25.2.2",
+    "mjml": "4.18.0",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3",
+    "vitest": "4.1.2"
+  }
+}

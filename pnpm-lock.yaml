@@ -504,6 +504,34 @@ importers:
         specifier: 4.1.0
         version: 4.1.0(@types/node@25.5.0)(jsdom@28.1.0(@noble/hashes@2.0.1))(vite@7.3.1(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.3)(sass@1.97.3)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
 
+  tools/email-renderer:
+    dependencies:
+      '@tokistack/logger':
+        specifier: workspace:*
+        version: link:../../packages/logger
+    devDependencies:
+      '@tokistack/typescript-config':
+        specifier: workspace:*
+        version: link:../../packages/tsconfig
+      '@types/mjml':
+        specifier: 4.7.4
+        version: 4.7.4
+      '@types/node':
+        specifier: 25.2.2
+        version: 25.2.2
+      mjml:
+        specifier: 4.18.0
+        version: 4.18.0(encoding@0.1.13)
+      tsx:
+        specifier: 4.21.0
+        version: 4.21.0
+      typescript:
+        specifier: 5.9.3
+        version: 5.9.3
+      vitest:
+        specifier: 4.1.2
+        version: 4.1.2(@types/node@25.2.2)(jsdom@28.1.0(@noble/hashes@2.0.1))(vite@7.3.1(@types/node@25.2.2)(jiti@2.6.1)(less@4.6.3)(sass@1.97.3)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3))
+
 packages:
 
   '@acemir/cssom@0.9.31':
@@ -1085,7 +1113,7 @@ packages:
         optional: true
 
   '@better-auth/core@https://pkg.pr.new/better-auth/better-auth/@better-auth/core@cca220b':
-    resolution: {integrity: sha512-U0CXbwLZmcVLmMM6OvVxOSw+2KgAcKXuFBs7CLOTtWxrtthKt6tkAxScRcKSHVcsq2w03v1a8/qlkYsXpEMt+g==, tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/core@cca220b}
+    resolution: {tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/core@cca220b}
     version: 1.7.0-beta.3
     peerDependencies:
       '@better-auth/utils': 0.4.0
@@ -1103,7 +1131,7 @@ packages:
         optional: true
 
   '@better-auth/drizzle-adapter@https://pkg.pr.new/better-auth/better-auth/@better-auth/drizzle-adapter@cca220b':
-    resolution: {integrity: sha512-P6IRsdzR+uy9xB9GXtlkXECUbeXk34K0RvEkbEDTMTENzyJVmS9KsYA5yxEg6rF2Skf78qA0YT5D2CwIyPtvEQ==, tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/drizzle-adapter@cca220b}
+    resolution: {tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/drizzle-adapter@cca220b}
     version: 1.7.0-beta.3
     peerDependencies:
       '@better-auth/core': ^1.7.0-beta.3
@@ -1125,7 +1153,7 @@ packages:
         optional: true
 
   '@better-auth/kysely-adapter@https://pkg.pr.new/better-auth/better-auth/@better-auth/kysely-adapter@cca220b':
-    resolution: {integrity: sha512-yNTAWWCmmsNGoy9w8GohJe96wPcqPqeRtAn1p/pgesb8HAZaFnuiGXeMGbHkm4hwPlIrO07l6cW8pC4ZpvvLvA==, tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/kysely-adapter@cca220b}
+    resolution: {tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/kysely-adapter@cca220b}
     version: 1.7.0-beta.3
     peerDependencies:
       '@better-auth/core': ^1.7.0-beta.3
@@ -1136,14 +1164,14 @@ packages:
         optional: true
 
   '@better-auth/memory-adapter@https://pkg.pr.new/better-auth/better-auth/@better-auth/memory-adapter@cca220b':
-    resolution: {integrity: sha512-ezPK9V7hqHFhffEYJf7Uqm2XZY5uCRkqa1VqCVgWkvozvfHxhaYecFSpn3X0CYWrHhZ/a1BsSAnKrKezIhSSYw==, tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/memory-adapter@cca220b}
+    resolution: {tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/memory-adapter@cca220b}
     version: 1.7.0-beta.3
     peerDependencies:
       '@better-auth/core': ^1.7.0-beta.3
       '@better-auth/utils': 0.4.0
 
   '@better-auth/mongo-adapter@https://pkg.pr.new/better-auth/better-auth/@better-auth/mongo-adapter@cca220b':
-    resolution: {integrity: sha512-1XrFhH6lFnwurzEadEQOaJ8FwQT+gqqrwdOsOH5Kd9XGu+ABI58Dkg81nAkGMqfzd0GYkQYwA9YwpJc0rd6g/g==, tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/mongo-adapter@cca220b}
+    resolution: {tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/mongo-adapter@cca220b}
     version: 1.7.0-beta.3
     peerDependencies:
       '@better-auth/core': ^1.7.0-beta.3
@@ -1154,7 +1182,7 @@ packages:
         optional: true
 
   '@better-auth/prisma-adapter@https://pkg.pr.new/better-auth/better-auth/@better-auth/prisma-adapter@cca220b':
-    resolution: {integrity: sha512-vlUeSsdXDw4S+JzVW7UJa4QDjIWyQJWfIFJ3YUaPPE1rps3oMgNQtjXdAruqTRvms5/n6/dob3XlNsmOdUCBpA==, tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/prisma-adapter@cca220b}
+    resolution: {tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/prisma-adapter@cca220b}
     version: 1.7.0-beta.3
     peerDependencies:
       '@better-auth/core': ^1.7.0-beta.3
@@ -1168,7 +1196,7 @@ packages:
         optional: true
 
   '@better-auth/telemetry@https://pkg.pr.new/better-auth/better-auth/@better-auth/telemetry@cca220b':
-    resolution: {integrity: sha512-WZn/jOKL04JR/aC8oM6viMgLGbwzxIMhwwCMXrcviVOfV20A+jn7d9XxeiPt2xdiptttJFBRKhBRQcxKz/R6yg==, tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/telemetry@cca220b}
+    resolution: {tarball: https://pkg.pr.new/better-auth/better-auth/@better-auth/telemetry@cca220b}
     version: 1.7.0-beta.3
     peerDependencies:
       '@better-auth/core': ^1.7.0-beta.3
@@ -5286,9 +5314,6 @@ packages:
   get-stream@6.0.1:
     resolution: {integrity: sha512-ts6Wi+2j3jQjqi70w5AlN8DFnkSwC+MqmxEzdEALB2qXZYV3X/b1CTfgPLGJNMeAWxdPfU8FO1ms3NUfaHCPYg==}
     engines: {node: '>=10'}
-
-  get-tsconfig@4.13.6:
-    resolution: {integrity: sha512-shZT/QMiSHc/YBLxxOkMtgSid5HFoauqCE3/exfsEcwg1WkeqjG+V40yBbBrsD+jW2HDXcs28xOfcbm2jI8Ddw==}
 
   get-tsconfig@4.14.0:
     resolution: {integrity: sha512-yTb+8DXzDREzgvYmh6s9vHsSVCHeC0G3PI5bEXNBHtmshPnO+S5O7qgLEOn0I5QvMy6kpZN8K1NKGyilLb93wA==}
@@ -12308,7 +12333,6 @@ snapshots:
   fdir@6.5.0(picomatch@4.0.4):
     optionalDependencies:
       picomatch: 4.0.4
-    optional: true
 
   file-entry-cache@8.0.0:
     dependencies:
@@ -12408,10 +12432,6 @@ snapshots:
       es-object-atoms: 1.1.1
 
   get-stream@6.0.1: {}
-
-  get-tsconfig@4.13.6:
-    dependencies:
-      resolve-pkg-maps: 1.0.0
 
   get-tsconfig@4.14.0:
     dependencies:
@@ -14379,8 +14399,7 @@ snapshots:
 
   picomatch@4.0.3: {}
 
-  picomatch@4.0.4:
-    optional: true
+  picomatch@4.0.4: {}
 
   pidtree@0.6.0: {}
 
@@ -15126,8 +15145,7 @@ snapshots:
 
   tinyexec@1.0.4: {}
 
-  tinyexec@1.1.1:
-    optional: true
+  tinyexec@1.1.1: {}
 
   tinyglobby@0.2.15:
     dependencies:
@@ -15138,7 +15156,6 @@ snapshots:
     dependencies:
       fdir: 6.5.0(picomatch@4.0.4)
       picomatch: 4.0.4
-    optional: true
 
   tinyrainbow@3.0.3: {}
 
@@ -15280,7 +15297,7 @@ snapshots:
   tsx@4.21.0:
     dependencies:
       esbuild: 0.27.7
-      get-tsconfig: 4.13.6
+      get-tsconfig: 4.14.0
     optionalDependencies:
       fsevents: 2.3.3
 
@@ -15512,11 +15529,11 @@ snapshots:
       magic-string: 0.30.21
       obug: 2.1.1
       pathe: 2.0.3
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       std-env: 4.0.0
       tinybench: 2.9.0
-      tinyexec: 1.0.4
-      tinyglobby: 0.2.15
+      tinyexec: 1.1.1
+      tinyglobby: 0.2.16
       tinyrainbow: 3.1.0
       vite: 7.3.1(@types/node@25.2.2)(jiti@2.6.1)(less@4.6.3)(sass@1.97.3)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)
       why-is-node-running: 2.3.0
@@ -15540,11 +15557,11 @@ snapshots:
       magic-string: 0.30.21
       obug: 2.1.1
       pathe: 2.0.3
-      picomatch: 4.0.3
+      picomatch: 4.0.4
       std-env: 4.0.0
       tinybench: 2.9.0
-      tinyexec: 1.0.4
-      tinyglobby: 0.2.15
+      tinyexec: 1.1.1
+      tinyglobby: 0.2.16
       tinyrainbow: 3.1.0
       vite: 7.3.1(@types/node@25.5.0)(jiti@2.6.1)(less@4.6.3)(sass@1.97.3)(terser@5.46.0)(tsx@4.21.0)(yaml@2.8.3)
       why-is-node-running: 2.3.0

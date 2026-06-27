@@ -1,0 +1,9 @@
+{
+  "email.invite.subject": "Your Tokistack spot is ready",
+  "email.invite.heading": "You're in.",
+  "email.invite.body": "Your Tokistack waitlist spot is ready. Click below to set up your account and start tracking your time — your invite link is valid for 7 days.",
+  "email.invite.preheader": "Your waitlist spot is ready — claim it before the link expires.",
+  "email.invite.cta": "Claim Your Spot",
+  "email.footer": "© 2026 Tokistack. All rights reserved. · You received this email because you joined the Tokistack waitlist.",
+  "email.footer.privacy": "Privacy Policy"
+}
