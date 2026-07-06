@@ -1,0 +1,9 @@
+[package]
+name = "email-rs"
+version = "1.0.0"
+edition = "2024"
+
+[dependencies]
+resend-rs = "0.27.0"
+serde_json.workspace = true
+tokio.workspace = true
