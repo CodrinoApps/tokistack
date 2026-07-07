@@ -3,6 +3,7 @@ members = [
   "apps/admin",
   "apps/admin-cli",
   "packages/admin-core",
+  "packages/email-rs",
 ]
 resolver = "3"
 

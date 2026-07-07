@@ -1,0 +1,9 @@
+{
+  "email.invite.subject": "Dein Tokistack-Platz ist bereit",
+  "email.invite.heading": "Du bist dabei.",
+  "email.invite.body": "Dein Tokistack-Wartelistenplatz ist frei. Klicke unten, um dein Konto einzurichten und mit der Zeiterfassung zu beginnen — dein Einladungslink ist 7 Tage lang gültig.",
+  "email.invite.preheader": "Dein Wartelistenplatz ist bereit — sichere ihn, bevor der Link abläuft.",
+  "email.invite.cta": "Platz sichern",
+  "email.footer": "© 2026 Tokistack. Alle Rechte vorbehalten. · Du erhältst diese E-Mail, weil du dich für die Tokistack-Warteliste angemeldet hast.",
+  "email.footer.privacy": "Datenschutz"
+}
