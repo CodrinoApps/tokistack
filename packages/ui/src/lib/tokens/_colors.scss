@@ -6,11 +6,16 @@
   --color-base-200: oklch(97.466% 0.011 259.822);
   --color-base-300: oklch(93.268% 0.016 262.751);
   --color-base-400: oklch(82.5% 0.018 260);
+  // base-500 fails WCAG AA as a text colour (2.49:1 on base-200). Reserve it for
+  // non-text use; base-600 is the secondary *text* colour.
   --color-base-500: oklch(70% 0.025 258);
+  --color-base-600: oklch(53% 0.025 259.822);
   --color-base-content: oklch(41.886% 0.053 255.824);
 
-  --color-primary: oklch(56.86% 0.255 257.57);
-  --color-primary-content: oklch(91.372% 0.051 257.57);
+  // primary was 56.86%, which left primary-content at only 3.62:1 on a filled
+  // button and primary-as-text at 4.37:1 on base-200. 53% clears 4.5:1 for both.
+  --color-primary: oklch(53% 0.255 257.57);
+  --color-primary-content: oklch(97.048% 0.014 254.604);
   --color-secondary: oklch(42.551% 0.161 282.339);
   --color-secondary-content: oklch(88.51% 0.032 282.339);
   --color-accent: oklch(59.939% 0.191 335.171);
@@ -35,9 +40,12 @@
   --color-base-200: oklch(19.314% 0.037 265.754);
   --color-base-300: oklch(17.86% 0.034 265.754);
   --color-base-400: oklch(35% 0.025 264);
+  // See the light block: base-500 is 2.73:1 here, base-600 is 5.41:1.
   --color-base-500: oklch(48% 0.018 263);
+  --color-base-600: oklch(64.5% 0.026 262.049);
   --color-base-content: oklch(84.153% 0.007 265.754);
 
+  // Dark primary is a different hue and already passes at 9.16:1 — unchanged.
   --color-primary: oklch(75.351% 0.138 232.661);
   --color-primary-content: oklch(15.07% 0.027 232.661);
   --color-secondary: oklch(68.011% 0.158 276.934);
