@@ -2,7 +2,9 @@ use clap::ValueEnum;
 
 #[derive(Clone, ValueEnum)]
 pub enum Environment {
+    /// Testing environment, using the TokistackDev profile
     Dev,
+    /// Production environment, using the TokistackProd profile
     Prod,
 }
 

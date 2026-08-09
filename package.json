@@ -5,6 +5,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
+    "admin:install": "cargo install --path apps/admin-cli --force",
     "turbo:build": "turbo run build",
     "turbo:build:api": "turbo run build --filter=@tokistack/api",
     "lint": "eslint .",

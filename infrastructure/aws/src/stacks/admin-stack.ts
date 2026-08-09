@@ -27,7 +27,7 @@ export class AdminStack extends cdk.Stack {
       clusterName: props.clusterName,
       name: "admin",
       runtime: lambda.Runtime.PROVIDED_AL2023,
-      memorySize: 256,
+      memorySize: 512,
       timeout: cdk.Duration.seconds(15),
       artifactsBucket,
       artifactKey: `${hashOrVersion.valueAsString}/admin`,

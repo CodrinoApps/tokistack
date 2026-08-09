@@ -7,8 +7,11 @@ use clap::{Parser, Subcommand};
 use crate::{environment::Environment, lambda::invoke};
 use anyhow::{Context, Result};
 
+/// Administrative commands for Tokistack, executed via the admin lambda.
 #[derive(Parser)]
+#[command(name = "tokistack", version)]
 struct Cli {
+    /// Target environment to run the command against
     #[arg(long, default_value = "dev")]
     env: Environment,
 
@@ -18,7 +21,9 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
+    /// Invite a user by sending them a sign-up invitation email
     InviteUser {
+        /// Email address to send the invitation to
         #[arg(long)]
         email: String,
     },
