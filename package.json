@@ -16,6 +16,9 @@
     "packages/i18n/locales/*.json": [
       "pnpm --filter @tokistack/i18n validate"
     ],
+    "*.rs": [
+      "rustfmt --edition 2024"
+    ],
     "*": [
       "pnpm dprint fmt --allow-no-files",
       "pnpm lint"

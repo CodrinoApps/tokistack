@@ -34,6 +34,7 @@ export class ApiStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(15),
       artifactsBucket,
       artifactKey: `${hashOrVersion.valueAsString}/api`,
+      paramsAndSecretsExtension: true,
     });
 
     const authorizerFunction = new TokistackFunction(this, "AuthorizerFunction", {
@@ -44,6 +45,7 @@ export class ApiStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(5),
       artifactsBucket,
       artifactKey: `${hashOrVersion.valueAsString}/authorizer`,
+      paramsAndSecretsExtension: true,
     });
 
     const authFunction = new TokistackFunction(this, "AuthFunction", {
@@ -54,6 +56,7 @@ export class ApiStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(15),
       artifactsBucket,
       artifactKey: `${hashOrVersion.valueAsString}/auth`,
+      paramsAndSecretsExtension: true,
     });
 
     authFunction.function.addEnvironment("CLUSTER_NAME", props.clusterName);

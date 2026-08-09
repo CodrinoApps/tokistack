@@ -1,7 +1,7 @@
 mod environment;
 mod lambda;
 
-use admin_core::AdminCommand;
+use admin_core::{AdminCommand, AdminResponse};
 use clap::{Parser, Subcommand};
 
 use crate::{environment::Environment, lambda::invoke};
@@ -40,10 +40,11 @@ async fn main() -> Result<()> {
 
     println!("invoking admin lambda with command: {:#?}", command);
 
-    invoke(&cli.env, payload).await?;
-    println!(
-        "admin lambda invocation complete for operation: {:#?}",
-        command
-    );
-    Ok(())
+    match invoke(&cli.env, payload).await? {
+        AdminResponse::Success { message } => {
+            println!("{message}");
+            Ok(())
+        }
+        AdminResponse::Error { message } => Err(anyhow::anyhow!(message)),
+    }
 }

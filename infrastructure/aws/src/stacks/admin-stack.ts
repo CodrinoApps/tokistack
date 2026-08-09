@@ -23,7 +23,7 @@ export class AdminStack extends cdk.Stack {
       `tokistack-${props.clusterName}-artifacts`,
     );
 
-    new TokistackFunction(this, "AdminFunction", {
+    const adminFunction = new TokistackFunction(this, "AdminFunction", {
       clusterName: props.clusterName,
       name: "admin",
       runtime: lambda.Runtime.PROVIDED_AL2023,
@@ -31,6 +31,9 @@ export class AdminStack extends cdk.Stack {
       timeout: cdk.Duration.seconds(15),
       artifactsBucket,
       artifactKey: `${hashOrVersion.valueAsString}/admin`,
+      paramsAndSecretsExtension: false,
     });
+
+    adminFunction.function.addEnvironment("CLUSTER_NAME", props.clusterName);
   }
 }

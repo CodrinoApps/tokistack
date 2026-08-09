@@ -1,0 +1,100 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE tokistack.waitlist\n           SET status     = 'invited'::tokistack.waitlist_status,\n               token      = $1,\n               invited_at = NOW()\n           WHERE email = $2\n             AND status <> 'registered'::tokistack.waitlist_status\n           RETURNING\n               email,\n               status AS \"status: WaitlistStatus\",\n               language,\n               token,\n               invited_at,\n               created_at",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "email",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "tokistack.waitlist",
+            "name": "email"
+          }
+        }
+      },
+      {
+        "ordinal": 1,
+        "name": "status: WaitlistStatus",
+        "type_info": {
+          "Custom": {
+            "name": "tokistack.waitlist_status",
+            "kind": {
+              "Enum": [
+                "pending",
+                "invited",
+                "registered"
+              ]
+            }
+          }
+        },
+        "origin": {
+          "Table": {
+            "table": "tokistack.waitlist",
+            "name": "status"
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "language",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "tokistack.waitlist",
+            "name": "language"
+          }
+        }
+      },
+      {
+        "ordinal": 3,
+        "name": "token",
+        "type_info": "Text",
+        "origin": {
+          "Table": {
+            "table": "tokistack.waitlist",
+            "name": "token"
+          }
+        }
+      },
+      {
+        "ordinal": 4,
+        "name": "invited_at",
+        "type_info": "Timestamp",
+        "origin": {
+          "Table": {
+            "table": "tokistack.waitlist",
+            "name": "invited_at"
+          }
+        }
+      },
+      {
+        "ordinal": 5,
+        "name": "created_at",
+        "type_info": "Timestamp",
+        "origin": {
+          "Table": {
+            "table": "tokistack.waitlist",
+            "name": "created_at"
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      true,
+      true,
+      false
+    ]
+  },
+  "hash": "02414b2f470c33c548ac86ff2c7c414006c76d07abd27ad6145d07060520a176"
+}

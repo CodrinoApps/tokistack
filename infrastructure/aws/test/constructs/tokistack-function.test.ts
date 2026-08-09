@@ -4,7 +4,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import * as cdk from "aws-cdk-lib/core";
 import { TokistackFunction } from "../../src/constructs/tokistack-function";
 
-function makeStack(runtimeOverride?: lambda.Runtime) {
+function makeStack(runtimeOverride?: lambda.Runtime, paramsAndSecretsExtension = true) {
   const app = new cdk.App();
   const stack = new cdk.Stack(app, "TestStack", {
     env: { account: "123456789012", region: "eu-central-1" },
@@ -18,6 +18,7 @@ function makeStack(runtimeOverride?: lambda.Runtime) {
     timeout: cdk.Duration.seconds(10),
     artifactsBucket: bucket,
     artifactKey: "abc123/worker",
+    paramsAndSecretsExtension,
   });
   return Template.fromStack(stack);
 }
@@ -71,6 +72,13 @@ describe("TokistackFunction", () => {
       Layers: [
         Match.stringLikeRegexp("arn:aws:lambda:.+:layer:AWS-Parameters-and-Secrets-Lambda-Extension-Arm64"),
       ],
+    });
+  });
+
+  test("function has no layers when the Parameters and Secrets extension is disabled", () => {
+    const nativeTemplate = makeStack(lambda.Runtime.PROVIDED_AL2023, false);
+    nativeTemplate.hasResourceProperties("AWS::Lambda::Function", {
+      Layers: Match.absent(),
     });
   });
 
