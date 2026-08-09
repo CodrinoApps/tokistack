@@ -33,9 +33,9 @@ describe("AdminStack", () => {
     });
   });
 
-  test("memory size is 256 MB", () => {
+  test("memory size is 512 MB", () => {
     template.hasResourceProperties("AWS::Lambda::Function", {
-      MemorySize: 256,
+      MemorySize: 512,
     });
   });
 

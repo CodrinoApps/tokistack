@@ -10,12 +10,16 @@ export default {
       headers.set("X-Forwarded-Proto", "https");
       headers.set("Host", apiUrl.hostname);
 
-      return fetch(apiUrl, {
+      const response = await fetch(apiUrl, {
         method: request.method,
         headers,
         body: request.body,
         redirect: "manual",
       });
+
+      const result = new Response(response.body, response);
+      result.headers.set("X-Robots-Tag", "noindex, nofollow");
+      return result;
     }
 
     return env.FRONTEND.fetch(request);

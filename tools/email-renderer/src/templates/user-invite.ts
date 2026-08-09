@@ -7,7 +7,7 @@ type UserInviteProps = {
 };
 
 export function userInvite({ locale }: UserInviteProps): { html: string } {
-  const inviteUrl = "https://{{environment}}.tokistack.com/invite?token={{invite_token}}&email={{user_email}}";
+  const inviteUrl = "{{app_url}}/invite?token={{invite_token}}";
 
   const { html: rawHtml } = mjml2html(`
     <mjml>

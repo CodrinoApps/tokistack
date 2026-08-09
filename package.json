@@ -5,6 +5,7 @@
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
+    "admin:install": "cargo install --path apps/admin-cli --force",
     "turbo:build": "turbo run build",
     "turbo:build:api": "turbo run build --filter=@tokistack/api",
     "lint": "eslint .",
@@ -15,6 +16,9 @@
   "lint-staged": {
     "packages/i18n/locales/*.json": [
       "pnpm --filter @tokistack/i18n validate"
+    ],
+    "*.rs": [
+      "rustfmt --edition 2024"
     ],
     "*": [
       "pnpm dprint fmt --allow-no-files",

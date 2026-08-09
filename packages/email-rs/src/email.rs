@@ -1,3 +1,4 @@
+use crate::cluster::Cluster;
 use crate::locale::Locale;
 use crate::templates;
 
@@ -8,7 +9,7 @@ pub struct ResolvedEmail {
 }
 
 pub trait Email {
-    fn resolve(&self, environment: &str) -> ResolvedEmail;
+    fn resolve(&self, cluster: &Cluster) -> ResolvedEmail;
 }
 
 /// Invitation email sent to a user who has been invited to Tokistack.
@@ -19,12 +20,11 @@ pub struct Invitation {
 }
 
 impl Email for Invitation {
-    fn resolve(&self, environment: &str) -> ResolvedEmail {
+    fn resolve(&self, cluster: &Cluster) -> ResolvedEmail {
         let subject = templates::localized(&self.locale, "email.invite.subject");
         let html = templates::invite_html(&self.locale)
-            .replace("{{environment}}", environment)
-            .replace("{{invite_token}}", &self.invite_token)
-            .replace("{{user_email}}", &self.to);
+            .replace("{{app_url}}", &cluster.app_base_url())
+            .replace("{{invite_token}}", &self.invite_token);
 
         ResolvedEmail {
             to: self.to.clone(),
@@ -38,23 +38,37 @@ impl Email for Invitation {
 mod tests {
     use super::*;
 
-    #[test]
-    fn resolves_invitation_content() {
-        let invitation = Invitation {
+    fn invitation() -> Invitation {
+        Invitation {
             to: "user@example.com".to_string(),
             locale: Locale::En,
             invite_token: "tok_123".to_string(),
-        };
+        }
+    }
 
-        let resolved = invitation.resolve("dev");
+    #[test]
+    fn resolves_invitation_content() {
+        let resolved = invitation().resolve(&Cluster::from_name("testing").unwrap());
 
         assert_eq!(resolved.to, "user@example.com");
         assert_eq!(resolved.subject, "Your Tokistack spot is ready");
         assert!(
             resolved
                 .html
-                .contains("https://dev.tokistack.com/invite?token=tok_123&email=user@example.com")
+                .contains("https://app-testing.tokistack.com/invite?token=tok_123")
         );
+        assert!(!resolved.html.contains("user@example.com"));
         assert!(!resolved.html.contains("{{"));
+    }
+
+    #[test]
+    fn links_to_the_production_app_from_production() {
+        let resolved = invitation().resolve(&Cluster::Production);
+
+        assert!(
+            resolved
+                .html
+                .contains("https://app.tokistack.com/invite?token=tok_123")
+        );
     }
 }

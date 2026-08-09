@@ -61,8 +61,7 @@ mod tests {
     #[test]
     fn invite_html_carries_placeholders() {
         let html = invite_html(&Locale::En);
-        assert!(html.contains("{{environment}}"));
+        assert!(html.contains("{{app_url}}"));
         assert!(html.contains("{{invite_token}}"));
-        assert!(html.contains("{{user_email}}"));
     }
 }

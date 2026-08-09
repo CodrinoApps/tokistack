@@ -13,6 +13,7 @@ interface TokistackFunctionProps {
   timeout: cdk.Duration;
   artifactsBucket: s3.IBucket;
   artifactKey: string;
+  paramsAndSecretsExtension: boolean;
 }
 
 export class TokistackFunction extends Construct {
@@ -27,9 +28,9 @@ export class TokistackFunction extends Construct {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
-    const paramsAndSecrets = lambda.ParamsAndSecretsLayerVersion.fromVersion(
-      lambda.ParamsAndSecretsVersions.V1_0_103,
-    );
+    const paramsAndSecrets = props.paramsAndSecretsExtension
+      ? lambda.ParamsAndSecretsLayerVersion.fromVersion(lambda.ParamsAndSecretsVersions.V1_0_103)
+      : undefined;
 
     this.function = new lambda.Function(this, "Default", {
       functionName: `tokistack-${props.clusterName}-${props.name}`,

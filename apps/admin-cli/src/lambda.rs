@@ -23,6 +23,13 @@ pub async fn invoke(env: &Environment, payload: String) -> Result<AdminResponse>
         .payload()
         .ok_or_else(|| anyhow::anyhow!("missing payload in lambda response"))?;
 
+    if let Some(function_error) = response.function_error() {
+        anyhow::bail!(
+            "lambda returned {function_error}: {}",
+            String::from_utf8_lossy(response_blob.as_ref())
+        );
+    }
+
     serde_json::from_slice::<AdminResponse>(response_blob.as_ref())
         .context("failed to deserialize lambda payload")
 }

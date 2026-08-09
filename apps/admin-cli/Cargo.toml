@@ -3,6 +3,10 @@ name = "admin-cli"
 version = "1.0.0"
 edition = "2024"
 
+[[bin]]
+name = "tokistack"
+path = "src/main.rs"
+
 [dependencies]
 admin-core.workspace = true
 anyhow.workspace = true

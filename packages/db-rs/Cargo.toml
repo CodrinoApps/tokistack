@@ -1,0 +1,9 @@
+[package]
+name = "db-rs"
+version = "1.0.0"
+edition = "2024"
+
+[dependencies]
+chrono.workspace = true
+sqlx.workspace = true
+tokio.workspace = true
