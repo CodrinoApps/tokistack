@@ -1,4 +1,5 @@
-use crate::cluster::Cluster;
+use core_rs::cluster::Cluster;
+
 use crate::locale::Locale;
 use crate::templates;
 

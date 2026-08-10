@@ -4,14 +4,14 @@ version = "1.0.0"
 edition = "2024"
 
 [dependencies]
-admin-core.workspace = true
 aws-config.workspace = true
 aws-sdk-ssm.workspace = true
+core-rs = { workspace = true, features = ["admin", "cluster", "ssm", "instrumentation"] }
 db-rs.workspace = true
 email-rs.workspace = true
 lambda_runtime.workspace = true
 rand.workspace = true
-serde.workspace = true
 sqlx.workspace = true
 thiserror.workspace = true
 tokio.workspace = true
+tracing.workspace = true

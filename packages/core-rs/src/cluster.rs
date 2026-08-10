@@ -1,9 +1,3 @@
-/// The deployment cluster an email is sent from. Resolves the public web app
-/// URL that email links point at.
-///
-/// Mirrors the subdomain rule in
-/// `infrastructure/cloudflare/environments/main.tf`: production is served from
-/// `app`, every other cluster from `app-<cluster>`.
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Cluster {
     Production,
@@ -28,7 +22,13 @@ impl Cluster {
         }
     }
 
-    /// The base URL of the web app for this cluster, without a trailing slash.
+    pub fn name(&self) -> &str {
+        match self {
+            Cluster::Production => PRODUCTION,
+            Cluster::Named(name) => name,
+        }
+    }
+
     pub fn app_base_url(&self) -> String {
         match self {
             Cluster::Production => format!("https://app.{DOMAIN}"),
@@ -42,7 +42,7 @@ mod tests {
     use super::*;
 
     #[test]
-    fn production_uses_the_bare_app_subdomain() {
+    fn production_uses_correct_app_subdomain() {
         assert_eq!(
             Cluster::from_name("production").unwrap().app_base_url(),
             "https://app.tokistack.com"
@@ -50,7 +50,7 @@ mod tests {
     }
 
     #[test]
-    fn other_clusters_are_suffixed() {
+    fn non_prod_clusters_are_suffixed() {
         assert_eq!(
             Cluster::from_name("testing").unwrap().app_base_url(),
             "https://app-testing.tokistack.com"
@@ -67,7 +67,7 @@ mod tests {
     }
 
     #[test]
-    fn empty_cluster_names_are_rejected() {
+    fn invalid_cluster_names_are_rejected() {
         assert_eq!(Cluster::from_name(""), Err(EmptyClusterName));
         assert_eq!(Cluster::from_name("   \t "), Err(EmptyClusterName));
     }

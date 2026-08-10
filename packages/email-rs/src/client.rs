@@ -1,8 +1,8 @@
 use resend_rs::types::CreateEmailBaseOptions;
 use resend_rs::{Resend, Result};
 
-use crate::cluster::Cluster;
 use crate::email::{Email, ResolvedEmail};
+use core_rs::cluster::Cluster;
 
 const SENDER: &str = "Tokistack <noreply@tokistack.com>";
 
@@ -24,6 +24,7 @@ impl EmailClient {
     }
 
     /// Resolves the given email to its localized content and sends it.
+    #[tracing::instrument(name = "send_email", skip_all)]
     pub async fn send(&self, email: impl Email) -> Result<()> {
         let ResolvedEmail { to, subject, html } = email.resolve(&self.cluster);
 
