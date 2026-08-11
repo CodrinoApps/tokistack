@@ -36,7 +36,7 @@ export class WaitlistComponent {
   readonly consentTouched = signal(false);
   readonly showConsentError = computed(() => !this.consent() && this.consentTouched());
 
-  readonly privacyUrl = computed(() => `https://tokistack.com/${this.translate.locale()}/privacy`);
+  readonly privacyUrl = computed(() => `https://tokistack.com/privacy`);
 
   readonly turnstileToken = signal("");
   readonly submitting = signal(false);
