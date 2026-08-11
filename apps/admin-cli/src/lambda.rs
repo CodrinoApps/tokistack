@@ -1,7 +1,7 @@
 use crate::environment::Environment;
-use admin_core::AdminResponse;
 use anyhow::{Context, Result};
 use aws_sdk_lambda::primitives::Blob;
+use core_rs::admin::AdminResponse;
 
 pub async fn invoke(env: &Environment, payload: String) -> Result<AdminResponse> {
     let config = aws_config::from_env()

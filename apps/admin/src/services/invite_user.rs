@@ -12,6 +12,7 @@ pub enum InviteUserError {
     Email(#[from] email_rs::Error),
 }
 
+#[tracing::instrument(skip_all)]
 pub async fn invite_user(
     db: &DbClient,
     email_client: &EmailClient,

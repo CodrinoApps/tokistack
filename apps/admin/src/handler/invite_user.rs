@@ -1,4 +1,4 @@
-use admin_core::AdminResponse;
+use core_rs::admin::AdminResponse;
 use lambda_runtime::{Error, tracing};
 
 use crate::services::invite_user::{InviteUserError, invite_user};

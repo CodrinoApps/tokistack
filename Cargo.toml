@@ -2,18 +2,18 @@
 members = [
   "apps/admin",
   "apps/admin-cli",
-  "packages/admin-core",
+  "packages/core-rs",
   "packages/db-rs",
   "packages/email-rs",
 ]
 resolver = "3"
 
 [workspace.dependencies]
-admin-core = { path = "packages/admin-core" }
 anyhow = "1.0.104"
 aws-config = { version = "1.8.17", features = ["behavior-version-latest"] }
 aws-sdk-ssm = "1.118.0"
 chrono = "0.4.45"
+core-rs = { path = "packages/core-rs" }
 db-rs = { path = "packages/db-rs" }
 email-rs = { path = "packages/email-rs" }
 lambda_runtime = "1.2.0"
@@ -23,3 +23,4 @@ serde_json = "1.0"
 sqlx = { version = "0.9.0", default-features = false, features = ["runtime-tokio", "tls-rustls-aws-lc-rs", "postgres", "macros", "uuid", "chrono"] }
 thiserror = "2.0.20"
 tokio = { version = "1", features = ["full"] }
+tracing = "0.1.44"

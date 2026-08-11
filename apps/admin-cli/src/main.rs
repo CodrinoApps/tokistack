@@ -1,8 +1,8 @@
 mod environment;
 mod lambda;
 
-use admin_core::{AdminCommand, AdminResponse};
 use clap::{Parser, Subcommand};
+use core_rs::admin::{AdminCommand, AdminResponse};
 
 use crate::{environment::Environment, lambda::invoke};
 use anyhow::{Context, Result};

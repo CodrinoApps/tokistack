@@ -4,7 +4,8 @@ version = "1.0.0"
 edition = "2024"
 
 [dependencies]
+core-rs = { workspace = true, features = ["cluster"] }
 resend-rs = { version = "0.27.0", default-features = false, features = ["rustls-tls"] }
 serde_json.workspace = true
-thiserror.workspace = true
 tokio.workspace = true
+tracing.workspace = true

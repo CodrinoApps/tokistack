@@ -1,6 +1,7 @@
 use db_rs::models::waitlist::{WaitlistEntry, WaitlistStatus};
 use sqlx::PgExecutor;
 
+#[tracing::instrument(skip_all)]
 pub async fn set_invited(
     executor: impl PgExecutor<'_>,
     email: &str,

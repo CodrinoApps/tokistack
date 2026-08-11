@@ -1,10 +1,12 @@
-use std::collections::HashMap;
+use std::time::SystemTime;
 
 use aws_config::BehaviorVersion;
 use aws_sdk_ssm::Client;
+use core_rs::cluster::Cluster;
+use core_rs::{instrumentation, ssm};
 use db_rs::DbClient;
-use email_rs::{Cluster, EmailClient};
-use lambda_runtime::{Error, run, service_fn, tracing};
+use email_rs::EmailClient;
+use lambda_runtime::{Error, Runtime, service_fn};
 
 mod handler;
 mod repository;
@@ -16,61 +18,47 @@ use state::AppState;
 
 const DB_CONNECTION_STRING_PARAMETER: &str = "/tokistack/db-connection-string";
 const RESEND_API_KEY_PARAMETER: &str = "/tokistack/resend-api-key";
-
-async fn resolve_parameters(
-    ssm: &Client,
-    names: &[&str],
-) -> Result<HashMap<String, String>, Error> {
-    let response = ssm
-        .get_parameters()
-        .set_names(Some(names.iter().map(|name| name.to_string()).collect()))
-        .with_decryption(true)
-        .send()
-        .await?;
-
-    let invalid = response.invalid_parameters();
-    if !invalid.is_empty() {
-        return Err(format!("unknown SSM parameters: {}", invalid.join(", ")).into());
-    }
-
-    Ok(response
-        .parameters()
-        .iter()
-        .filter_map(|parameter| {
-            Some((
-                parameter.name()?.to_string(),
-                parameter.value()?.to_string(),
-            ))
-        })
-        .collect())
-}
+const NEW_RELIC_LICENSE_KEY_PARAMETER: &str = "/tokistack/new-relic-license-key";
 
 #[tokio::main]
 async fn main() -> Result<(), Error> {
-    tracing::init_default_subscriber();
+    let started = SystemTime::now();
 
     let config = aws_config::load_defaults(BehaviorVersion::latest()).await;
-    let ssm = Client::new(&config);
+    let ssm_client = Client::new(&config);
 
     let cluster = Cluster::from_name(&std::env::var("CLUSTER_NAME")?)?;
 
-    let mut parameters = resolve_parameters(
-        &ssm,
-        &[DB_CONNECTION_STRING_PARAMETER, RESEND_API_KEY_PARAMETER],
+    let [connection_string, resend_api_key, new_relic_license_key] = ssm::resolve(
+        &ssm_client,
+        [
+            DB_CONNECTION_STRING_PARAMETER,
+            RESEND_API_KEY_PARAMETER,
+            NEW_RELIC_LICENSE_KEY_PARAMETER,
+        ],
     )
     .await?;
+    let ssm_done = SystemTime::now();
 
-    let connection_string = parameters
-        .remove(DB_CONNECTION_STRING_PARAMETER)
-        .ok_or_else(|| format!("SSM parameter {DB_CONNECTION_STRING_PARAMETER} is empty"))?;
-    let api_key = parameters
-        .remove(RESEND_API_KEY_PARAMETER)
-        .ok_or_else(|| format!("SSM parameter {RESEND_API_KEY_PARAMETER} is empty"))?;
+    let telemetry = instrumentation::init(&cluster, new_relic_license_key, "tokistack-admin")?;
+    let telemetry_done = SystemTime::now();
+
+    let db = DbClient::new(&connection_string).await?;
+    let db_done = SystemTime::now();
+
+    telemetry.record_cold_start(&[
+        ("config_and_ssm", started, ssm_done),
+        ("telemetry_init", ssm_done, telemetry_done),
+        ("db_connect", telemetry_done, db_done),
+    ]);
 
     let state = AppState {
-        db: DbClient::new(&connection_string).await?,
-        email: EmailClient::new(&api_key, cluster),
+        db,
+        email: EmailClient::new(&resend_api_key, cluster),
     };
 
-    run(service_fn(|event| function_handler(event, &state))).await
+    Runtime::new(service_fn(|event| function_handler(event, &state)))
+        .layer(telemetry.layer())
+        .run()
+        .await
 }

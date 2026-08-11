@@ -19,6 +19,7 @@ impl DbClient {
             .max_connections(2)
             .min_connections(0)
             .acquire_timeout(Duration::from_secs(10))
+            .acquire_slow_threshold(Duration::from_secs(5))
             .connect_with(options)
             .await?;
         Ok(Self { pool })

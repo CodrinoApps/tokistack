@@ -119,6 +119,10 @@ jobs:
           - workspace: "email-rs"
             test_command: cargo test -p email-rs
             cargo_lambda: false
+
+          - workspace: "core-rs"
+            test_command: cargo test -p core-rs --all-features
+            cargo_lambda: false
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
